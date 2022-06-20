@@ -1,18 +1,41 @@
 import { useState } from "react";
 
+function setClassName(...classnames: string[]) {
+  return classnames.join(' ')
+}
+
 export default function Enter() {
   const [method, setMethod] = useState<"email" | "phone">("email");
   const onEmailClick = () => setMethod("email");
   const onPhoneClick = () => setMethod("phone");
   return (
-    <div>
-      <h3>Enter to Re:earth</h3>
-      <div>
-        <div>
-          <h5>Enter using:</h5>
-          <div>
-            <button onClick={onEmailClick}>Email</button>
-            <button onClick={onPhoneClick}>Phone</button>
+    <div className='mt-16'>
+      <h3 className='text-3xl font-bold text-center'>Re:earth</h3>
+      <div className='mt-8'>
+        <div className='flex flex-col items-center'>
+          <h5 className='text-sm text-gray-500 text-center'>Enter using:</h5>
+          <div className='grid grid-cols-2 gap-16 mt-8 border-b w-full'>
+            <button className={setClassName(
+              'pb-4 font-medium border-b-2',
+              method === 'email'
+                ? 'text-orange-400 font-medium  border-orange-500'
+                : 'border-transparent'
+            )}
+              onClick={onEmailClick}
+            >
+              Email
+            </button>
+            <button className={
+              setClassName(
+                'pb-4 font-medium border-b-2',
+                method === 'phone'
+                  ? 'text-orange-400 font-medium border-orange-500'
+                  : 'border-transparent'
+              )}
+              onClick={onPhoneClick}
+            >
+              Phone
+            </button>
           </div>
         </div>
         <form>
