@@ -2,19 +2,28 @@ import type { NextPage } from "next";
 
 const Home: NextPage = () => {
   return (
-    <div>
+    <div className='flex flex-col space-y-5 py-10'>
       {new Array(10).fill(1).map((_, i) => (
-        <div key={i}>
-          <div>
-            <div />
-            <div>
-              <h3>New iPhone 14</h3>
-              <span>Black</span>
-              <span>$95</span>
+        <div
+          key={i}
+          className='flex border-b pb-4 px-4 cursor-pointer justify-between'
+        >
+          <div className='flex space-x-4'>
+            <div className='w-20 h-20 bg-gray-400 rounded-md'/>
+            <div className='pt-2 flex flex-col'>
+              <h3 className='text-sm font-medium text-gray-900'>
+                New iPhone 14
+              </h3>
+              <span className='text-xs text-gray-500'>
+                Black
+              </span>
+              <span className='font-medium mt-1 text-gray-900'>
+                $95
+              </span>
             </div>
           </div>
-          <div>
-            <div>
+          <div className='flex items-end justify-end space-x-1.5'>
+            <div className='flex items-center text-sm text-gray-600 space-x-0.5'>
               <svg
                 className="w-4 h-4"
                 fill="none"
@@ -31,7 +40,7 @@ const Home: NextPage = () => {
               </svg>
               <span>1</span>
             </div>
-            <div>
+            <div className='flex items-center text-sm text-gray-600 space-x-0.5'>
               <svg
                 className="w-4 h-4"
                 fill="none"
@@ -51,7 +60,7 @@ const Home: NextPage = () => {
           </div>
         </div>
       ))}
-      <button>
+      <button className='fixed bottom-16 right-16 bg-orange-400 hover:bg-orange-300 rounded-full p-3 text-white shadow-xl transition-colors'>
         <svg
           className="h-6 w-6"
           xmlns="http://www.w3.org/2000/svg"
