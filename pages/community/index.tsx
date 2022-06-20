@@ -5,9 +5,13 @@ const Community: NextPage = () => {
     <div className='py-16 px-4 space-y-8'>
       {new Array(6).fill(1).map((_, i) => (
         <div key={i} className='flex flex-col items-start'>
-          <span className='flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800'>동네질문</span>
+          <span className='flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800'>
+            동네질문
+          </span>
           <div className='mt-2 text-gray-700'>
-            <span className='text-orange-500 font-medium'>Q.</span>
+            <span className='text-orange-500 font-medium'>
+              Q.
+            </span>
             What is the best mandu restaurant?
           </div>
           <div className='mt-5 flex items-center justify-between w-full text-gray-500 font-medium text-xs'>
