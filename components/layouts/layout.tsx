@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react'
 import { setClassName } from '../../libs/utils';
 
@@ -15,10 +16,35 @@ export default function Layout({
   hasTabBar,
   children
 }: LayoutProps) {
+  const router = useRouter()
+  const goBack = () => { router.back() }
   return (
     <div>
-      <div className='fixed bg-white w-full max-w-xl text-lg font-medium py-3 text-gray-800 border-b top-0 flex items-center justify-center'>
-        {title ? <span>{title}</span> : null }
+      <div className={setClassName(
+        !canGoBack ?'justify-center' : '',
+        'fixed bg-white w-full max-w-xl text-lg px-5 font-medium py-3 text-gray-800 border-b top-0 flex items-center space-x-2'
+      )}
+      >
+        {canGoBack ? (
+          <button onClick={goBack}>
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M15 19l-7-7 7-7"
+              >
+              </path>
+            </svg>
+          </button>
+        ) : null }
+        { title ? <span>{title}</span> : null }
       </div>
       <div className={setClassName('pt-16', hasTabBar ? 'pb-24' : '')}>
         {children}
