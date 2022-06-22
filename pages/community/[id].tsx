@@ -1,9 +1,9 @@
 import type { NextPage } from "next";
-import Layout from '../../components/layouts/layout';
+import Layout from "../../components/layouts/layout";
 
 const CommunityPostDetail: NextPage = () => {
   return (
-    <Layout title='Details' canGoBack>
+    <Layout title="Details" canGoBack>
       <div>
         <span className="inline-flex my-3 ml-4 items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
           동네질문
@@ -11,10 +11,8 @@ const CommunityPostDetail: NextPage = () => {
         <div className="flex mb-3 px-4 pb-3  border-b items-center space-x-3">
           <div className="w-10 h-10 rounded-full bg-slate-300" />
           <div>
-            <p className="text-sm font-medium text-gray-700">
-              Aloofelicidad
-            </p>
-            <p className="text-xs font-medium text-gray-500 cursor-pointer" >
+            <p className="text-sm font-medium text-gray-700">Aloofelicidad</p>
+            <p className="text-xs font-medium text-gray-500 cursor-pointer">
               View profile &rarr;
             </p>
           </div>

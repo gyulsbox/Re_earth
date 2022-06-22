@@ -1,9 +1,9 @@
 import type { NextPage } from "next";
-import Layout from '../../components/layouts/layout';
+import Layout from "../../components/layouts/layout";
 
 const Upload: NextPage = () => {
   return (
-    <Layout title='Upload item' canGoBack>
+    <Layout title="Upload item" canGoBack>
       <div className="px-4 space-y-5 py-10">
         <div>
           <label className="w-full cursor-pointer text-gray-600 hover:border-orange-500 hover:text-orange-500 flex items-center justify-center border-2 border-dashed border-gray-300 h-48 rounded-md">

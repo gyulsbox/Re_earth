@@ -1,27 +1,25 @@
 import type { NextPage } from "next";
-import Layout from '../../components/layouts/layout';
+import Layout from "../../components/layouts/layout";
 
 const Community: NextPage = () => {
   return (
-    <Layout title='Community' hasTabBar>
-      <div className='py-16 px-4 space-y-8'>
+    <Layout title="Community" hasTabBar>
+      <div className="py-16 px-4 space-y-8">
         {new Array(6).fill(1).map((_, i) => (
-          <div key={i} className='flex flex-col items-start'>
-            <span className='flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800'>
+          <div key={i} className="flex flex-col items-start">
+            <span className="flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
               동네질문
             </span>
-            <div className='mt-2 text-gray-700'>
-              <span className='text-orange-500 font-medium'>
-                Q.
-              </span>
+            <div className="mt-2 text-gray-700">
+              <span className="text-orange-500 font-medium">Q.</span>
               What is the best mandu restaurant?
             </div>
-            <div className='mt-5 flex items-center justify-between w-full text-gray-500 font-medium text-xs'>
+            <div className="mt-5 flex items-center justify-between w-full text-gray-500 font-medium text-xs">
               <span>귤상자</span>
               <span>18시간 전</span>
             </div>
-            <div className='flex space-x-5 mt-3 py-2.5 text-gray-700 border-t border-b w-full'>
-              <span className='flex skew-x-2 items-center text-sm'>
+            <div className="flex space-x-5 mt-3 py-2.5 text-gray-700 border-t border-b w-full">
+              <span className="flex skew-x-2 items-center text-sm">
                 <svg
                   className="w-4 h-4"
                   fill="none"
@@ -38,7 +36,7 @@ const Community: NextPage = () => {
                 </svg>
                 <span>궁금해요 1</span>
               </span>
-              <span className='flex skew-x-2 items-center text-sm'>
+              <span className="flex skew-x-2 items-center text-sm">
                 <svg
                   className="w-4 h-4"
                   fill="none"
@@ -58,7 +56,7 @@ const Community: NextPage = () => {
             </div>
           </div>
         ))}
-        <button className='fixed bottom-16 right-16 bg-orange-400 hover:bg-orange-300 rounded-full p-3 text-white shadow-xl transition-colors'>
+        <button className="fixed bottom-16 right-16 bg-orange-400 hover:bg-orange-300 rounded-full p-3 text-white shadow-xl transition-colors">
           <svg
             className="w-6 h-6"
             fill="none"

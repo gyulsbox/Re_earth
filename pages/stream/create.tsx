@@ -1,9 +1,9 @@
 import type { NextPage } from "next";
-import Layout from '../../components/layouts/layout';
+import Layout from "../../components/layouts/layout";
 
 const Create: NextPage = () => {
   return (
-    <Layout title='Post Stream' canGoBack>
+    <Layout title="Post Stream" canGoBack>
       <div className=" space-y-5 py-10 px-4">
         <div>
           <label

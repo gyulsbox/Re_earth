@@ -1,9 +1,9 @@
 import type { NextPage } from "next";
-import Layout from '../../components/layouts/layout';
+import Layout from "../../components/layouts/layout";
 
 const Chats: NextPage = () => {
   return (
-    <Layout title='Chat' hasTabBar>
+    <Layout title="Chat" hasTabBar>
       <div className="py-10 divide-y-[1px] ">
         {new Array(10).fill(1).map((_, i) => (
           <div

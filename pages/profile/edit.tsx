@@ -1,9 +1,9 @@
 import type { NextPage } from "next";
-import Layout from '../../components/layouts/layout';
+import Layout from "../../components/layouts/layout";
 
 const EditProfile: NextPage = () => {
   return (
-    <Layout title='Edit Profile' canGoBack>
+    <Layout title="Edit Profile" canGoBack>
       <div className="py-10 px-4 space-y-4">
         <div className="flex items-center space-x-3">
           <div className="w-14 h-14 rounded-full bg-slate-500" />
@@ -12,7 +12,12 @@ const EditProfile: NextPage = () => {
             className="cursor-pointer py-2 px-3 border border-gray-300 rounded-md shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 text-gray-700"
           >
             Change
-            <input id="picture" type="file" className="hidden" accept="image/*" />
+            <input
+              id="picture"
+              type="file"
+              className="hidden"
+              accept="image/*"
+            />
           </label>
         </div>
         <div className="space-y-1">
