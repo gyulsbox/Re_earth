@@ -1,4 +1,4 @@
-import { setClassName } from "../libs/utils";
+import { setClassName } from "@libs/client/utils";
 
 interface MessageProps {
   message: string;
