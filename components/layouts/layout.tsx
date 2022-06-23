@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { setClassName } from "../../libs/utils";
+import { setClassName } from "@libs/client/utils";
 import { useRouter } from "next/router";
 
 interface LayoutProps {

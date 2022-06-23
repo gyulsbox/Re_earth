@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
-import Layout from '../../components/layouts/layout';
-import Message from "../../components/message";
+import Layout from "@components/layouts/layout";
+import Message from "@components/message";
 
 const ChatDetail: NextPage = () => {
   return (
