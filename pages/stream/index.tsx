@@ -7,7 +7,7 @@ const Live: NextPage = () => {
   return (
     <Layout hasTabBar title="라이브">
       <div className=" divide-y-[1px] space-y-4">
-        {[1, 1, 1, 1, 1, 1, 1].map((_, i) => (
+        {new Array(6).fill(1).map((_, i) => (
           <Link key={i} href={`/live/${i}`}>
             <a className="pt-4 block  px-4">
               <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video" />
