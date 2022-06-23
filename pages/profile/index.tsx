@@ -39,7 +39,7 @@ const Profile: NextPage = () => {
               </span>
             </a>
           </Link>
-          <Link href="/profile/bought">
+          <Link href="/profile/purchased">
             <a className="flex flex-col items-center">
               <div className="w-14 h-14 text-white bg-orange-400 rounded-full flex items-center justify-center">
                 <svg
@@ -62,7 +62,7 @@ const Profile: NextPage = () => {
               </span>
             </a>
           </Link>
-          <Link href="/profile/loved">
+          <Link href="/profile/wishlist">
             <a className="flex flex-col items-center">
               <div className="w-14 h-14 text-white bg-orange-400 rounded-full flex items-center justify-center">
                 <svg

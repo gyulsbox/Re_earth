@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Item from "../../components/item";
 import Layout from "../../components/layouts/layout";
 
-const Bought: NextPage = () => {
+const Purchased: NextPage = () => {
   return (
     <Layout title="구매내역" canGoBack>
       <div className="flex flex-col space-y-5 pb-10  divide-y">
@@ -21,4 +21,4 @@ const Bought: NextPage = () => {
   );
 };
 
-export default Bought;
+export default Purchased;

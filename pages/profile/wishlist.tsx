@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Item from "../../components/item";
 import Layout from "../../components/layouts/layout";
 
-const Loved: NextPage = () => {
+const Wishlist: NextPage = () => {
   return (
     <Layout title="관심목록" canGoBack>
       <div className="flex flex-col space-y-5 pb-10  divide-y">
@@ -21,4 +21,4 @@ const Loved: NextPage = () => {
   );
 };
 
-export default Loved;
+export default Wishlist;
