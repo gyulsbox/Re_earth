@@ -1,18 +1,19 @@
 import type { NextPage } from "next";
-import Layout from "../../components/layouts/layout";
+import Layout from '../../components/layouts/layout';
+import TextArea from "../../components/textarea";
 
 const CommunityPostDetail: NextPage = () => {
   return (
-    <Layout title="Details" canGoBack>
+    <Layout canGoBack>
       <div>
         <span className="inline-flex my-3 ml-4 items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
           동네질문
         </span>
-        <div className="flex mb-3 px-4 pb-3  border-b items-center space-x-3">
+        <div className="flex mb-3 px-4 cursor-pointer pb-3  border-b items-center space-x-3">
           <div className="w-10 h-10 rounded-full bg-slate-300" />
           <div>
-            <p className="text-sm font-medium text-gray-700">Aloofelicidad</p>
-            <p className="text-xs font-medium text-gray-500 cursor-pointer">
+            <p className="text-sm font-medium text-gray-700">Steve Jebs</p>
+            <p className="text-xs font-medium text-gray-500">
               View profile &rarr;
             </p>
           </div>
@@ -64,7 +65,7 @@ const CommunityPostDetail: NextPage = () => {
             <div className="w-8 h-8 bg-slate-200 rounded-full" />
             <div>
               <span className="text-sm block font-medium text-gray-700">
-                Ralo
+                Steve Jebs
               </span>
               <span className="text-xs text-gray-500 block ">2시간 전</span>
               <p className="text-gray-700 mt-2">
@@ -74,10 +75,10 @@ const CommunityPostDetail: NextPage = () => {
           </div>
         </div>
         <div className="px-4">
-          <textarea
-            className="mt-1 shadow-sm w-full focus:ring-orange-500 rounded-md border-gray-300 focus:border-orange-500 "
-            rows={4}
+          <TextArea
+            name="description"
             placeholder="Answer this question!"
+            required
           />
           <button className="mt-2 w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none ">
             Reply
