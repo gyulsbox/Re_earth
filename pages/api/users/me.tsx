@@ -19,7 +19,7 @@ async function handler(
 
 export default withApiSession(
   withHandler({
-    method: "GET",
+    method: ["GET"],
     handler,
   }),
 );
