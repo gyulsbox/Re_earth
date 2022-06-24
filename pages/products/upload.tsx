@@ -3,11 +3,25 @@ import Button from "@components/button";
 import Input from "@components/input";
 import Layout from "@components/layouts/layout";
 import TextArea from "@components/textarea";
+import { useForm } from "react-hook-form";
+import useMutation from "@libs/client/useMutation";
+
+interface UploadProductForm {
+  name: string;
+  price: string;
+  description: string;
+}
 
 const Upload: NextPage = () => {
+  const { register, handleSubmit } = useForm<UploadProductForm>();
+  const [uploadProduct, { loading, data }] = useMutation("api/products");
+  const onValid = (data: UploadProductForm) => {
+    if (loading) return;
+    uploadProduct(data);
+  };
   return (
     <Layout canGoBack title="Upload Product">
-      <form className="p-4 space-y-4">
+      <form onSubmit={handleSubmit(onValid)} className="p-4 space-y-4">
         <div>
           <label className="w-full cursor-pointer text-gray-600 hover:border-orange-500 hover:text-orange-500 flex items-center justify-center border-2 border-dashed border-gray-300 h-48 rounded-md">
             <svg
@@ -27,17 +41,26 @@ const Upload: NextPage = () => {
             <input className="hidden" type="file" />
           </label>
         </div>
-        <Input required label="Name" name="name" type="text" />
         <Input
-          required
+          register={register("name", { required: true })}
+          label="Name"
+          name="name"
+          type="text"
+        />
+        <Input
+          register={register("price", { required: true })}
           label="Price"
           placeholder="0.00"
           name="price"
           type="text"
           kind="price"
         />
-        <TextArea name="description" label="Description" />
-        <Button text="Upload item" />
+        <TextArea
+          register={register("description", { required: true })}
+          name="description"
+          label="Description"
+        />
+        <Button text={loading ? "Loading" : "Upload item"} />
       </form>
     </Layout>
   );
