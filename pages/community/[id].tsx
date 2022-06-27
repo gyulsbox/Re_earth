@@ -48,7 +48,7 @@ const CommunityPostDetail: NextPage = () => {
     `/api/posts/${router.query.id}/empathy`,
   );
   const [sendComment, { data: commentData, loading: commentLoading }] =
-    useMutation<CommentResponse>(`/api/posts/${router.query.id}/comments`);
+    useMutation<CommentResponse>(`/api/posts/${router.query.id}/comment`);
   const onEmpathyClick = () => {
     if (!data) return;
     mutate(
@@ -73,7 +73,7 @@ const CommunityPostDetail: NextPage = () => {
   };
   const onValid = (form: CommentForm) => {
     if (commentLoading) return;
-    sendComment({});
+    sendComment(form);
   };
   useEffect(() => {
     if (commentData && commentData.ok) {
@@ -157,7 +157,7 @@ const CommunityPostDetail: NextPage = () => {
                   {comment.user.name}
                 </span>
                 <span className="text-xs text-gray-500 block ">
-                  {comment.createdAt.getTime()}
+                  {String(comment.createdAt)}
                 </span>
                 <p className="text-gray-700 mt-2">{comment.comment}</p>
               </div>
