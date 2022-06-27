@@ -15,6 +15,9 @@ export default function useUser() {
     if (data && !data.ok) {
       router.replace("/enter");
     }
+    if (data && data.ok && router.pathname === "/enter") {
+      router.replace("/profile");
+    }
   }, [data, router]);
 
   return { user: data?.profile, isLoading: !data && !error };
