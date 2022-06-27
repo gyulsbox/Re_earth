@@ -10,19 +10,21 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  phone     String?   @unique
-  email     String?   @unique
-  name      String
-  avatar    String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  tokens    Token[]
-  products  Product[]
-  wishs     Wish[]
-  posts     Post[]
-  comments  Comment[]
-  empathy   Empathy[]
+  id              Int       @id @default(autoincrement())
+  phone           String?   @unique
+  email           String?   @unique
+  name            String
+  avatar          String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  tokens          Token[]
+  products        Product[]
+  posts           Post[]
+  comments        Comment[]
+  empathy         Empathy[]
+  writtenReviews  Review[]  @relation(name: "writtenReviews")
+  receivedReviews Review[]  @relation(name: "receivedReviews")
+  record          Record[]
 }
 
 model Token {
@@ -35,24 +37,18 @@ model Token {
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      Int
-  image       String
-  name        String
-  price       Int
-  description String   @db.MediumText
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  wishs       Wish[]
-}
-
-model Wish {
-  id        Int     @id @default(autoincrement())
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId Int
+  id            Int      @id @default(autoincrement())
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        Int
+  image         String
+  name          String
+  price         Int
+  wishCount     Int      @default(0)
+  commentsCount Int      @default(0)
+  description   String   @db.MediumText
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  Record        Record[]
 }
 
 model Post {
@@ -87,4 +83,34 @@ model Empathy {
   postId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Review {
+  id           Int      @id @default(autoincrement())
+  review       String   @db.MediumText
+  score        Int      @default(1)
+  createdBy    User     @relation(name: "writtenReviews", fields: [createdById], references: [id], onDelete: Cascade)
+  createdById  Int
+  createdFor   User     @relation(name: "receivedReviews", fields: [createdForId], references: [id], onDelete: Cascade)
+  createdForId Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Record {
+  kind      Kind
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
+  score     Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Kind {
+  Purchase
+  Sale
+  Wish
 }
