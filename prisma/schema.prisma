@@ -20,6 +20,9 @@ model User {
   tokens    Token[]
   products  Product[]
   wishs     Wish[]
+  posts     Post[]
+  comments  Comment[]
+  empathy   Empathy[]
 }
 
 model Token {
@@ -50,4 +53,36 @@ model Wish {
   userId    Int
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
+}
+
+model Post {
+  id        Int       @id @default(autoincrement())
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  question  String    @db.MediumText
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  comments  Comment[]
+  empathy   Empathy[]
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+  comment   String   @db.MediumText
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Empathy {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
