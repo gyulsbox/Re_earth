@@ -11,8 +11,8 @@ async function handler(
     session: { user },
     query: { kind },
   } = req;
-  if (kind === "favs") {
-    const favs = await client.record.findMany({
+  if (kind === "wishs") {
+    const wishs = await client.record.findMany({
       where: {
         userId: user?.id,
         kind: "Wish",
@@ -23,7 +23,7 @@ async function handler(
     });
     res.json({
       ok: true,
-      favs,
+      wishs,
     });
   }
   if (kind === "purchases") {
