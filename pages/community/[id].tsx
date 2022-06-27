@@ -7,6 +7,8 @@ import { Comment, Post, User } from "@prisma/client";
 import Link from "next/link";
 import useMutation from "@libs/client/useMutation";
 import { setClassName } from "@libs/client/utils";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 interface CommentWithUser extends Comment {
   user: User;
@@ -27,12 +29,26 @@ interface CommunityPostResponse {
   isEmpathy: boolean;
 }
 
+interface CommentForm {
+  comment: string;
+}
+
+interface CommentResponse {
+  ok: boolean;
+  comment: Comment;
+}
+
 const CommunityPostDetail: NextPage = () => {
   const router = useRouter();
+  const { register, handleSubmit, reset } = useForm<CommentForm>();
   const { data, mutate } = useSWR<CommunityPostResponse>(
     router.query.id ? `/api/posts/${router.query.id}` : null,
   );
-  const [empathy] = useMutation(`/api/posts/${router.query.id}/empathy`);
+  const [empathy, { loading }] = useMutation(
+    `/api/posts/${router.query.id}/empathy`,
+  );
+  const [sendComment, { data: commentData, loading: commentLoading }] =
+    useMutation<CommentResponse>(`/api/posts/${router.query.id}/comments`);
   const onEmpathyClick = () => {
     if (!data) return;
     mutate(
@@ -51,8 +67,20 @@ const CommunityPostDetail: NextPage = () => {
       },
       false,
     );
-    empathy({});
+    if (!loading) {
+      empathy({});
+    }
   };
+  const onValid = (form: CommentForm) => {
+    if (commentLoading) return;
+    sendComment({});
+  };
+  useEffect(() => {
+    if (commentData && commentData.ok) {
+      reset();
+    }
+  }, [commentData, reset]);
+
   return (
     <Layout canGoBack>
       <div>
@@ -136,16 +164,16 @@ const CommunityPostDetail: NextPage = () => {
             </div>
           ))}
         </div>
-        <div className="px-4">
+        <form onSubmit={handleSubmit(onValid)} className="px-4">
           <TextArea
+            register={register("comment", { required: true, minLength: 5 })}
             name="description"
             placeholder="Answer this question!"
-            required
           />
           <button className="mt-2 w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none ">
-            Reply
+            {commentLoading ? "Loading" : "Reply"}
           </button>
-        </div>
+        </form>
       </div>
     </Layout>
   );
