@@ -11,20 +11,21 @@ async function handler(
     query: { id },
     session: { user },
   } = req;
-  const alreadyExists = await client.wish.findFirst({
+  const alreadyExists = await client.record.findFirst({
     where: {
       productId: +id.toString(),
       userId: user?.id,
+      kind: "Wish",
     },
   });
   if (alreadyExists) {
-    await client.wish.delete({
+    await client.record.delete({
       where: {
         id: alreadyExists.id,
       },
     });
   } else {
-    await client.wish.create({
+    await client.record.create({
       data: {
         user: {
           connect: {
@@ -36,10 +37,24 @@ async function handler(
             id: +id.toString(),
           },
         },
+        kind: "Wish",
       },
     });
   }
-  res.json({ ok: true });
+  const wish = await client.record.count({
+    where: {
+      productId: +id.toString(),
+      kind: "Wish",
+    },
+  });
+  await client.product.update({
+    where: {
+      id: +id.toString(),
+    },
+    data: {
+      wishCount: wish,
+    },
+  });
 }
 
 export default withApiSession(

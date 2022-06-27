@@ -8,15 +8,9 @@ import useSWR from "swr";
 import { Product } from "@prisma/client";
 import "react-loading-skeleton/dist/skeleton.css";
 
-interface ProductWithWishs extends Product {
-  _count: {
-    wishs: number;
-  };
-}
-
 interface ProductResponse {
   ok: boolean;
-  products: ProductWithWishs[];
+  products: Product[];
 }
 
 const Home: NextPage = () => {
@@ -47,7 +41,7 @@ const Home: NextPage = () => {
                 title={product.name}
                 price={product.price}
                 comments={1}
-                hearts={product._count.wishs}
+                hearts={product.wishCount}
               />
             ))}
         <FloatButton href="/products/upload">
