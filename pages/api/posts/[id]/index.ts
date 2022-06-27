@@ -9,6 +9,7 @@ async function handler(
 ) {
   const {
     query: { id },
+    session: { user },
   } = req;
   const post = await client.post.findUnique({
     where: {
@@ -44,6 +45,15 @@ async function handler(
       },
     },
   });
+  const isEmpathy = Boolean(
+    await client.empathy.findFirst({
+      where: {
+        postId: +id.toString(),
+        userId: user?.id,
+      },
+    }),
+  );
+
   if (!post) {
     res.status(404).json({
       ok: false,
@@ -53,6 +63,7 @@ async function handler(
     res.json({
       ok: true,
       post,
+      isEmpathy,
     });
   }
 }
