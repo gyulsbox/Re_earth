@@ -17,7 +17,7 @@ export default function Layout({
 }: LayoutProps) {
   const router = useRouter();
   const onClick = () => {
-    router.back();
+    router?.back();
   };
   return (
     <div>
@@ -55,7 +55,7 @@ export default function Layout({
             <a
               className={setClassName(
                 "flex flex-col items-center space-y-2 ",
-                router.pathname === "/"
+                router?.pathname === "/"
                   ? "text-orange-500"
                   : "hover:text-gray-500 transition-colors",
               )}
@@ -81,7 +81,7 @@ export default function Layout({
             <a
               className={setClassName(
                 "flex flex-col items-center space-y-2 ",
-                router.pathname === "/community"
+                router?.pathname === "/community"
                   ? "text-orange-500"
                   : "hover:text-gray-500 transition-colors",
               )}
@@ -107,7 +107,7 @@ export default function Layout({
             <a
               className={setClassName(
                 "flex flex-col items-center space-y-2 ",
-                router.pathname === "/chats"
+                router?.pathname === "/chats"
                   ? "text-orange-500"
                   : "hover:text-gray-500 transition-colors",
               )}
@@ -133,7 +133,7 @@ export default function Layout({
             <a
               className={setClassName(
                 "flex flex-col items-center space-y-2 ",
-                router.pathname === "/streams"
+                router?.pathname === "/streams"
                   ? "text-orange-500"
                   : "hover:text-gray-500 transition-colors",
               )}
@@ -159,7 +159,7 @@ export default function Layout({
             <a
               className={setClassName(
                 "flex flex-col items-center space-y-2 ",
-                router.pathname === "/profile"
+                router?.pathname === "/profile"
                   ? "text-orange-500"
                   : "hover:text-gray-500 transition-colors",
               )}
