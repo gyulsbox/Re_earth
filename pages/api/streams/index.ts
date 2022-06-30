@@ -30,28 +30,29 @@ async function handler(
     });
   }
   if (req.method === "GET") {
-		let page =
-			req.query.page && req.query.page !== undefined
-				? +req.query?.page?.toString()
-				: 1;
-		let skip: number = (page - 1) * 10;
-		if (!skip) {
-			skip = 1;
-		}
+    let page =
+      req.query.page && req.query.page !== undefined
+        ? +req.query?.page?.toString()
+        : 1;
+    let skip: number = (page - 1) * 10;
+    if (!skip) {
+      skip = 1;
+    }
 
-		const rowCnt = await client.stream.count({
-			select: {
-				_all: true,
-			},
-		});
-		const streams = await client.stream.findMany({
-			take: 10,
-			skip,
-			orderBy: {
-				createdAt: "desc",
-			},
-		});
-  res.json({ ok: true, streams, rowCnt })
+    const rowCnt = await client.stream.count({
+      select: {
+        _all: true,
+      },
+    });
+    const streams = await client.stream.findMany({
+      take: 10,
+      skip,
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    res.json({ ok: true, streams, rowCnt });
+  }
 }
 
 export default withApiSession(
