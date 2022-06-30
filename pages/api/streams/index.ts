@@ -38,7 +38,6 @@ async function handler(
     if (!skip) {
       skip = 1;
     }
-
     const rowCnt = await client.stream.count({
       select: {
         _all: true,
@@ -48,7 +47,7 @@ async function handler(
       take: 10,
       skip,
       orderBy: {
-        createdAt: "desc",
+        createdAt: "asc",
       },
     });
     res.json({ ok: true, streams, rowCnt });

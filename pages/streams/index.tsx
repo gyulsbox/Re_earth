@@ -18,16 +18,13 @@ interface StreamsResponse {
 
 const Streams: NextPage = () => {
   const router = useRouter();
-  const [page, setPage] = useState<number>();
+  const [page, setPage] = useState<number>(1);
   const { data } = useSWR<StreamsResponse>(`/api/streams?page=${page}`);
   useEffect(() => {
-    console.log("rendering check");
     if (router?.query?.page) {
-      setPage(+router?.query?.page.toString());
+      setPage(+router.query.page.toString());
     }
   }, [page, router]);
-  console.log(page);
-  console.log(data?.rowCnt?._all);
   return (
     <Layout hasTabBar title="라이브">
       <div className=" divide-y-[1px] space-y-4">
