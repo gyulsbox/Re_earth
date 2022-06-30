@@ -17,9 +17,10 @@
     "baseUrl": ".",
     "paths": {
       "@libs/*": ["libs/*"],
-      "@components/*": ["components/*"]
+      "@components/*": ["components/*"],
+      "@pages/*": ["pages/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "tests/unit/pages/home.spec.js"],
   "exclude": ["node_modules"]
 }
