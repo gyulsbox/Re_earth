@@ -38,7 +38,7 @@ const ItemDetail: NextPage = () => {
       <div className="px-4  py-4">
         <div className="mb-8">
           <img
-            className="h-96 bg-slate-300"
+            className="w-full bg-slate-300"
             src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${data?.product.image}/public`}
           />
           <div className="flex cursor-pointer py-3 border-t border-b items-center space-x-3">
@@ -62,7 +62,11 @@ const ItemDetail: NextPage = () => {
               {isValidating ? <Skeleton /> : data?.product?.name}
             </h1>
             <span className="text-2xl block mt-3 text-gray-900">
-              {isValidating ? <Skeleton /> : `$${data?.product?.price}`}
+              {isValidating ? (
+                <Skeleton />
+              ) : (
+                `${data?.product?.price.toLocaleString("ko-KR")}원`
+              )}
             </span>
             <p className=" my-6 text-gray-700">
               {isValidating ? <Skeleton /> : data?.product?.description}
@@ -122,7 +126,11 @@ const ItemDetail: NextPage = () => {
                   {isValidating ? <Skeleton /> : product?.name}
                 </h3>
                 <span className="text-sm font-medium text-gray-900">
-                  {isValidating ? <Skeleton /> : `$${product?.price}`}
+                  {isValidating ? (
+                    <Skeleton />
+                  ) : (
+                    `${product?.price.toLocaleString("ko-KR")}원`
+                  )}
                 </span>
               </div>
             ))}

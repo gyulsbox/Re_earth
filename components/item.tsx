@@ -7,6 +7,7 @@ interface ItemProps {
   price: number;
   comments: number;
   hearts: number;
+  create: string;
 }
 
 export default function Item({
@@ -16,6 +17,7 @@ export default function Item({
   comments,
   hearts,
   id,
+  create,
 }: ItemProps) {
   return (
     <Link href={`/products/${id}`}>
@@ -29,9 +31,10 @@ export default function Item({
           ) : (
             <div className="w-20 h-20 bg-gray-400 rounded-md" />
           )}
-          <div className="pt-2 flex flex-col">
+          <div className="pt-1 flex flex-col space-y-1">
             <h3 className="text-sm font-medium text-gray-900">{title}</h3>
-            <span className="font-medium mt-1 text-gray-900">${price}</span>
+            <span className="text-xs font-extralight">{create}</span>
+            <span className="font-bold mt-1 text-gray-900">{price.toLocaleString('ko-KR')}원</span>
           </div>
         </div>
         <div className="flex space-x-2 items-end justify-end">

@@ -14,7 +14,7 @@ interface ProductResponse {
 }
 
 const Home: NextPage = () => {
-  const { data, isValidating } = useSWR<ProductResponse>("/api/products");  
+  const { data, isValidating } = useSWR<ProductResponse>("/api/products");
   return (
     <Layout title="홈" hasTabBar>
       <Head>
@@ -42,6 +42,7 @@ const Home: NextPage = () => {
                 price={product.price}
                 comments={1}
                 hearts={product.wishCount}
+                create={product.createdAt.toString()}
               />
             ))}
         <FloatButton href="/products/upload">

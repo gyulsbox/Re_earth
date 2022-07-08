@@ -58,8 +58,6 @@ const Upload: NextPage = () => {
   const photo = watch("photo");
   const [photoPreview, setPhotoPreview] = useState("");
   useEffect(() => {
-    console.log(photoPreview);
-
     if (photo && photo.length > 0) {
       const file = photo[0];
       setPhotoPreview(URL.createObjectURL(file));
