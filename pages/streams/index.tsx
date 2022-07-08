@@ -38,7 +38,9 @@ const Streams: NextPage = () => {
             </a>
           </Link>
         ))}
-        <Pagination nowPage={page} dataSize={data?.rowCnt?._all ?? 0} />
+        {(data?.streams?.length ?? 0) > 10 ? (
+          <Pagination nowPage={page} dataSize={data?.rowCnt?._all ?? 0} />
+        ) : null}
         <FloatButton href="/streams/create">
           <svg
             className="w-6 h-6"
