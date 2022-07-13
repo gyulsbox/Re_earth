@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 interface ItemProps {
@@ -24,9 +25,11 @@ export default function Item({
       <a className="flex px-4 pt-5 cursor-pointer justify-between">
         <div className="flex space-x-4">
           {photo.length > 10 ? (
-            <img
+            <Image
               className="w-20 h-20 bg-gray-400 rounded-md"
               src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${photo}/productPreview`}
+              width={80}
+              height={80}
             />
           ) : (
             <div className="w-20 h-20 bg-gray-400 rounded-md" />
@@ -34,7 +37,9 @@ export default function Item({
           <div className="pt-1 flex flex-col space-y-1">
             <h3 className="text-sm font-medium text-gray-900">{title}</h3>
             <span className="text-xs font-extralight">{create}</span>
-            <span className="font-bold mt-1 text-gray-900">{price.toLocaleString('ko-KR')}원</span>
+            <span className="font-bold mt-1 text-gray-900">
+              {price.toLocaleString("ko-KR")}원
+            </span>
           </div>
         </div>
         <div className="flex space-x-2 items-end justify-end">

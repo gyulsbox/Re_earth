@@ -2,14 +2,14 @@ import type { NextPage } from "next";
 import Button from "@components/button";
 import Layout from "@components/layouts/layout";
 import { useRouter } from "next/router";
-import useSWR, { useSWRConfig } from "swr";
+import useSWR from "swr";
 import Link from "next/link";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { Product, User } from "@prisma/client";
 import useMutation from "@libs/client/useMutation";
 import { setClassName } from "@libs/client/utils";
-import useUser from "@libs/client/useUser";
+import Image from "next/image";
 
 interface ProductWithUser extends Product {
   user: User;
@@ -37,14 +37,19 @@ const ItemDetail: NextPage = () => {
     <Layout canGoBack>
       <div className="px-4  py-4">
         <div className="mb-8">
-          <img
-            className="w-full bg-slate-300"
-            src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${data?.product.image}/public`}
-          />
+          <div className="relative pb-96">
+            <Image
+              className="object-cover bg-slate-300"
+              src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${data?.product.image}/public`}
+              layout="fill"
+            />
+          </div>
           <div className="flex cursor-pointer py-3 border-t border-b items-center space-x-3">
-            <img
+            <Image
               className="w-12 h-12 rounded-full bg-slate-300"
               src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${data?.product?.user?.avatar}/public`}
+              width={48}
+              height={48}
             />
             <div>
               <p className="text-sm font-medium text-gray-700">
