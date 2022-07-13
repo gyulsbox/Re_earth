@@ -2,7 +2,6 @@ import type { NextPage } from "next";
 import FloatButton from "@components/float-button";
 import Item from "@components/item";
 import Layout from "@components/layouts/layout";
-import useUser from "@libs/client/useUser";
 import Head from "next/head";
 import useSWR from "swr";
 import { Product } from "@prisma/client";
