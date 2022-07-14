@@ -16,7 +16,7 @@ async function handler(
       id: +id.toString(),
     },
     include: {
-      streamMessages: {
+      messages: {
         select: {
           id: true,
           message: true,

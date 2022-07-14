@@ -9,25 +9,20 @@ async function handler(
 ) {
   const {
     query: { id },
-    body,
-    session: { user },
   } = req;
-  const message = await client.message.create({
-    data: {
-      message: body.message,
-      stream: {
-        connect: {
-          id: +id.toString(),
-        },
-      },
-      user: {
-        connect: {
-          id: user?.id,
-        },
-      },
+  const chats = await client.chat.count({
+    where: {
+      productId: +id.toString(),
     },
   });
-  res.json({ ok: true, message });
+  await client.product.update({
+    where: {
+      id: +id.toString(),
+    },
+    data: {
+      commentsCount: chats,
+    },
+  });
 }
 
 export default withApiSession(
