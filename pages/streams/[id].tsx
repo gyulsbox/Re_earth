@@ -1,15 +1,17 @@
 import type { NextPage } from "next";
 import Layout from "@components/layouts/layout";
-import Message from "@components/message";
+import Messages from "@components/message";
 import useSWR, { mutate } from "swr";
 import { useRouter } from "next/router";
-import { Stream, StreamMessage } from "@prisma/client";
+import { Stream, Message } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
 import useUser from "@libs/client/useUser";
 import { useEffect } from "react";
 
-interface StreamMessageWithUser extends StreamMessage {
+interface StreamMessage {
+  id: number;
+  message: string;
   user: {
     id: number;
     avatar?: string;
@@ -17,7 +19,7 @@ interface StreamMessageWithUser extends StreamMessage {
 }
 
 interface StreamWithMessages extends Stream {
-  streamMessages: StreamMessageWithUser[];
+  messages: StreamMessage[];
 }
 
 interface StreamResponse {
@@ -25,14 +27,14 @@ interface StreamResponse {
   stream: StreamWithMessages;
 }
 
-interface StreamMessageForm {
+interface MessageForm {
   message: string;
 }
 
 const Streams: NextPage = () => {
   const { user } = useUser();
   const router = useRouter();
-  const { register, handleSubmit, reset } = useForm<StreamMessageForm>();
+  const { register, handleSubmit, reset } = useForm<MessageForm>();
   const { data, mutate } = useSWR<StreamResponse>(
     router.query.id ? `/api/streams/${router.query.id}` : null,
     {
@@ -42,7 +44,7 @@ const Streams: NextPage = () => {
   const [sendMessage, { data: sendMessageData, loading }] = useMutation(
     `/api/streams/${router.query.id}/messages`,
   );
-  const onValid = (form: StreamMessageForm) => {
+  const onValid = (form: MessageForm) => {
     if (loading) return;
     reset();
     mutate(
@@ -52,8 +54,8 @@ const Streams: NextPage = () => {
           ...prev,
           stream: {
             ...prev.stream,
-            streamMessages: [
-              ...prev.stream.streamMessages,
+            messages: [
+              ...prev.stream.messages,
               {
                 id: Date.now(),
                 message: form.message,
@@ -106,8 +108,8 @@ const Streams: NextPage = () => {
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Live Chat</h2>
           <div className="py-10 pb-16 h-[50vh] overflow-y-scroll px-4 space-y-4">
-            {data?.stream.streamMessages.map((message) => (
-              <Message
+            {data?.stream.messages.map((message) => (
+              <Messages
                 key={message.id}
                 message={message.message}
                 reversed={message.user.id === user?.id}

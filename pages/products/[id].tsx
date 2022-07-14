@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Button from "@components/button";
 import Layout from "@components/layouts/layout";
 import { useRouter } from "next/router";
-import useSWR from "swr";
+import useSWR, { useSWRConfig } from "swr";
 import Link from "next/link";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -10,6 +10,9 @@ import { Product, User } from "@prisma/client";
 import useMutation from "@libs/client/useMutation";
 import { setClassName } from "@libs/client/utils";
 import Image from "next/image";
+import useUser from "@libs/client/useUser";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 interface ProductWithUser extends Product {
   user: User;
@@ -23,26 +26,60 @@ interface ItemDetailResponse {
 }
 
 const ItemDetail: NextPage = () => {
+  const { user } = useUser();
   const router = useRouter();
-  const { data, isValidating, mutate } = useSWR<ItemDetailResponse>(
+  const { mutate } = useSWRConfig();
+  const {
+    data,
+    isValidating,
+    mutate: boundMutate,
+  } = useSWR<ItemDetailResponse>(
     router.query.id ? `/api/products/${router.query.id}` : null,
   );
   const [toggleWish] = useMutation(`/api/products/${router.query.id}/wish`);
+  const [toggleComment] = useMutation(
+    `/api/products/${router.query.id}/comment`,
+  );
   const onWishClick = () => {
     toggleWish({});
     if (!data) return;
-    mutate({ ...data, isLiked: !data.isLiked }, false);
+    boundMutate({ ...data, isLiked: !data.isLiked }, false);
   };
+  const { handleSubmit } = useForm();
+  const [createChatRoom, { loading, data: chatData }] =
+    useMutation("/api/chats");
+  const onValid = async () => {
+    if (loading) return;
+    const productId = Number(router.query.id);
+    createChatRoom({ productId });
+    toggleComment({});
+  };
+  useEffect(() => {
+    if (!chatData?.ok) {
+      if (chatData?.currentChat) {
+        if (user?.id === chatData?.currentChat.userId)
+          router.push(`/chats/${chatData?.currentChat?.id}`);
+      }
+    }
+    if (chatData?.ok) {
+      router.push(`/chats/${chatData.chat.id}`);
+    }
+  }, [user, chatData, router]);
   return (
     <Layout canGoBack>
       <div className="px-4  py-4">
         <div className="mb-8">
           <div className="relative pb-96">
-            <Image
-              className="object-cover bg-slate-300"
-              src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${data?.product.image}/public`}
-              layout="fill"
-            />
+            {data?.product?.image ? (
+              <Image
+                layout="fill"
+                src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${data?.product.image}/public`}
+                className="object-cover"
+                alt="product-name"
+              />
+            ) : (
+              <div className="bg-slate-300 object-cover" />
+            )}
           </div>
           <div className="flex cursor-pointer py-3 border-t border-b items-center space-x-3">
             <Image
@@ -77,7 +114,9 @@ const ItemDetail: NextPage = () => {
               {isValidating ? <Skeleton /> : data?.product?.description}
             </p>
             <div className="flex items-center justify-between space-x-2">
-              <Button large text="Talk to seller" />
+              <form className="w-full" onSubmit={handleSubmit(onValid)}>
+                <Button large text="Talk to seller" />
+              </form>
               <button
                 onClick={onWishClick}
                 className={setClassName(

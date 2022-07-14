@@ -10,23 +10,24 @@ datasource db {
 }
 
 model User {
-  id              Int             @id @default(autoincrement())
-  phone           String?         @unique
-  email           String?         @unique
+  id              Int       @id @default(autoincrement())
+  phone           String?   @unique
+  email           String?   @unique
   name            String
   avatar          String?
-  createdAt       DateTime        @default(now())
-  updatedAt       DateTime        @updatedAt
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
   tokens          Token[]
   products        Product[]
   posts           Post[]
   comments        Comment[]
   empathy         Empathy[]
-  writtenReviews  Review[]        @relation(name: "writtenReviews")
-  receivedReviews Review[]        @relation(name: "receivedReviews")
+  writtenReviews  Review[]  @relation(name: "writtenReviews")
+  receivedReviews Review[]  @relation(name: "receivedReviews")
   record          Record[]
   streams         Stream[]
-  streamMessages  StreamMessage[]
+  messages        Message[]
+  chat            Chat[]
 }
 
 model Token {
@@ -39,18 +40,22 @@ model Token {
 }
 
 model Product {
-  id            Int      @id @default(autoincrement())
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id            Int       @id @default(autoincrement())
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        Int
   image         String
   name          String
   price         Int
-  wishCount     Int      @default(0)
-  commentsCount Int      @default(0)
-  description   String   @db.MediumText
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  Record        Record[]
+  wishCount     Int       @default(0)
+  commentsCount Int       @default(0)
+  description   String    @db.MediumText
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  record        Record[]
+  chat          Chat[]
+  messages      Message[]
+
+  @@index([userId])
 }
 
 model Post {
@@ -64,6 +69,8 @@ model Post {
   updatedAt DateTime  @updatedAt
   comments  Comment[]
   empathy   Empathy[]
+
+  @@index([userId])
 }
 
 model Comment {
@@ -75,6 +82,9 @@ model Comment {
   comment   String   @db.MediumText
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([postId])
 }
 
 model Empathy {
@@ -85,6 +95,9 @@ model Empathy {
   postId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([postId])
 }
 
 model Review {
@@ -97,6 +110,9 @@ model Review {
   createdForId Int
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
+
+  @@index([createdById])
+  @@index([createdForId])
 }
 
 model Record {
@@ -109,6 +125,9 @@ model Record {
   score     Int      @default(1)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([productId])
 }
 
 enum Kind {
@@ -118,27 +137,51 @@ enum Kind {
 }
 
 model Stream {
-  id             Int             @id @default(autoincrement())
-  title          String
-  description    String          @db.MediumText
-  price          Int
-  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId         Int
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  streamMessages StreamMessage[]
-  cloudflareId   String
-  cloudflareUrl  String
-  cloudflareKey  String
+  id            Int       @id @default(autoincrement())
+  title         String
+  description   String    @db.MediumText
+  price         Int
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        Int
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  messages      Message[]
+  cloudflareId  String
+  cloudflareUrl String
+  cloudflareKey String
+
+  @@index([userId])
 }
 
-model StreamMessage {
+model Message {
   id        Int      @id @default(autoincrement())
   message   String   @db.MediumText
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
-  stream    Stream   @relation(fields: [streamId], references: [id], onDelete: Cascade)
-  streamId  Int
+  stream    Stream?  @relation(fields: [streamId], references: [id], onDelete: Cascade)
+  streamId  Int?
+  chat      Chat?    @relation(fields: [chatId], references: [id])
+  chatId    Int?
+  product   Product? @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([streamId])
+  @@index([productId])
+}
+
+model Chat {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  product   Product?  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int?
+  messages  Message[]
+
+  @@index([userId])
+  @@index([productId])
 }
