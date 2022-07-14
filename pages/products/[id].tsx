@@ -66,7 +66,7 @@ const ItemDetail: NextPage = () => {
     }
   }, [user, chatData, router]);
   return (
-    <Layout canGoBack>
+    <Layout title="상품상세" canGoBack>
       <div className="px-4  py-4">
         <div className="mb-8">
           <div className="relative pb-96">
@@ -165,18 +165,22 @@ const ItemDetail: NextPage = () => {
           <div className=" mt-6 grid grid-cols-2 gap-4">
             {data?.relatedProducts.map((product) => (
               <div key={product.id}>
-                <div className="relative pb-60 rounded-md overflow-hidden">
-                  {product?.image ? (
-                    <Image
-                      layout="fill"
-                      src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${product.image}/public`}
-                      className="object-cover"
-                      alt="product-name"
-                    />
-                  ) : (
-                    <div className="bg-slate-300 object-cover" />
-                  )}
-                </div>
+                <Link href={`/products/${product.id}`}>
+                  <a className="text-xs font-medium text-gray-500">
+                    <div className="relative pb-60 rounded-md overflow-hidden">
+                      {product?.image ? (
+                        <Image
+                          layout="fill"
+                          src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${product.image}/public`}
+                          className="object-cover"
+                          alt="product-name"
+                        />
+                      ) : (
+                        <div className="bg-slate-300 object-cover" />
+                      )}
+                    </div>
+                  </a>
+                </Link>
                 <h3 className="text-gray-700 font-bold -mb-1">
                   {isValidating ? <Skeleton /> : product?.name}
                 </h3>
