@@ -1,34 +1,55 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
+# Project unnamed
+```
+프로젝트 및 문서 미완성.
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Git Commit Prefix
+###### 기본적으로 Conventional Commits 1.0.0 규약을 따름
+---
+### Type
+```shell
+feat: - 기능 추가
+fix: - 에러 수정 
+docs: - 문서 작성
+refactor: 리펙토링
+chore: - 기타 기능 관련없는 코드 수정
+test: - 테스트 관련
+# ex) git commit -am 'feat: new button'
+```
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## Issue 
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+---
+Github의 Issue를 사용하고 우선순위와 라벨을 붙혀 등록을 해놓습니다.
+처리한 이슈는 Close 처리합니다.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Test  
 
-## Learn More
+---
+TDD(Test Driven Development)를 기본 원칙으로 함  
 
-To learn more about Next.js, take a look at the following resources:
+### Unit Test
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```shell
+$ npm run test
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+> ##### 규칙
+> 1. 모든 함수는 최소 1개의 단위 테스트가 있어야 합니다.
+> 2. 하나의 테스트에 하나의 기능만 검증합니다. 
+> 3. 함수가 테스트 하기 어렵다면 테스트 하기 쉽게 분리하고 변경합니다. 
 
-## Deploy on Vercel
+### E2E Test
+평소 사용하던 Cypress를 사용합니다.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```shell
+$ npm run cypress
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## CSS
+
+---
+Tailwind CSS를 사용합니다.
+각 Component 및 Page 내부의 ClassName에 위치하는 것이 기본.
+
+적용이 쉽고 좋으나 가독성이 마냥 좋지많은 않음.
