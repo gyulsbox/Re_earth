@@ -17,6 +17,6 @@ export function withApiSession(fn: any) {
   return withIronSessionApiRoute(fn, cookieOptions);
 }
 
-export function withSsrSession(handler: any) {
+export function withSSRSession(handler: any) {
   return withIronSessionSsr(handler, cookieOptions);
 }
