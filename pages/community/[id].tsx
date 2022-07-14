@@ -9,6 +9,7 @@ import useMutation from "@libs/client/useMutation";
 import { setClassName } from "@libs/client/utils";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import Image from "next/image";
 
 interface CommentWithUser extends Comment {
   user: User;
@@ -89,7 +90,16 @@ const CommunityPostDetail: NextPage = () => {
           동네질문
         </span>
         <div className="flex mb-3 px-4 pb-3 border-b items-center space-x-3">
-          <div className="w-10 h-10 rounded-full bg-slate-300" />
+          {data?.post?.user?.avatar ? (
+            <Image
+              className="w-12 h-12 rounded-full bg-slate-300"
+              src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${data?.post?.user?.avatar}/avatar`}
+              width={48}
+              height={48}
+            />
+          ) : (
+            <div className="w-8 h-8 bg-slate-200 rounded-full" />
+          )}
           <div>
             <p className="text-sm font-medium text-gray-700">
               {data?.post?.user.name}
@@ -152,7 +162,16 @@ const CommunityPostDetail: NextPage = () => {
         <div className="px-4 my-5 space-y-5">
           {data?.post?.comments.map((comment) => (
             <div key={comment.id} className="flex items-start space-x-3">
-              <div className="w-8 h-8 bg-slate-200 rounded-full" />
+              {comment.user.avatar ? (
+                <Image
+                  className="w-12 h-12 rounded-full bg-slate-300"
+                  src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${comment.user.avatar}/avatar`}
+                  width={48}
+                  height={48}
+                />
+              ) : (
+                <div className="w-8 h-8 bg-slate-200 rounded-full" />
+              )}
               <div>
                 <span className="text-sm block font-medium text-gray-700">
                   {comment.user.name}
