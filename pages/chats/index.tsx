@@ -1,19 +1,68 @@
 import type { NextPage } from "next";
 import Link from "next/link";
-import Layout from '../../components/layouts/layout';
+import Layout from "@components/layouts/layout";
+import { Chat, Message, Product, User } from "@prisma/client";
+import useSWR from "swr";
+import Image from "next/image";
+import useUser from "@libs/client/useUser";
+
+interface ProductWtihUser extends Product {
+  user: User;
+}
+
+interface ChatWithUserAndProduct extends Chat {
+  user: User;
+  product: ProductWtihUser;
+  messages: Message[];
+}
+
+interface ChatResponse {
+  ok: boolean;
+  chats: ChatWithUserAndProduct[];
+}
 
 const Chats: NextPage = () => {
+  const { user } = useUser();
+  const { data } = useSWR<ChatResponse>(`/api/chats`);
+  console.log(data);
+
   return (
-    <Layout hasTabBar title="채팅">
-      <div className="divide-y-[1px] ">
-        {new Array(6).fill(1).map((_, i) => (
-          <Link href={`/chats/${i}`} key={i}>
+    <Layout title="채팅" seoTitle="Chats" hasTabBar>
+      <div className="py-3 divide-y-[1px]">
+        {data?.chats?.map((chat) => (
+          <Link href={`/chats/${chat.id}`} key={chat.id}>
             <a className="flex px-4 cursor-pointer py-3 items-center space-x-3">
-              <div className="w-12 h-12 rounded-full bg-slate-300" />
+              {user?.id === chat.userId ? (
+                chat.product.user.avatar ? (
+                  <Image
+                    width={48}
+                    height={48}
+                    src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${chat.product.user.avatar}/avatar`}
+                    className="w-12 h-12 rounded-full bg-slate-300"
+                    alt="avatar-image"
+                  />
+                ) : (
+                  <div className="w-12 h-12 rounded-full bg-slate-300" />
+                )
+              ) : chat.user.avatar ? (
+                <Image
+                  width={48}
+                  height={48}
+                  src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${chat.user.avatar}/avatar`}
+                  className="w-12 h-12 rounded-full bg-slate-300"
+                  alt="avatar-image"
+                />
+              ) : (
+                <div className="w-12 h-12 rounded-full bg-slate-300" />
+              )}
               <div>
-                <p className="text-gray-700">Steve Jebs</p>
+                <p className="text-gray-700">
+                  {user?.id === chat.userId
+                    ? chat.product.user.name
+                    : chat.user.name}
+                </p>
                 <p className="text-sm  text-gray-500">
-                  See you tomorrow in the corner at 2pm!
+                  {chat.messages[chat.messages.length - 1]?.message}
                 </p>
               </div>
             </a>

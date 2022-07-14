@@ -39,7 +39,7 @@ const Home: NextPage = () => {
                 photo={product.image}
                 title={product.name}
                 price={product.price}
-                comments={1}
+                comments={product.commentsCount}
                 hearts={product.wishCount}
                 create={product.createdAt.toString()}
               />
