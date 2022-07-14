@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import useUser from "@libs/client/useUser";
 import useMutation from "@libs/client/useMutation";
+import { useRouter } from "next/router";
 
 interface EditProfileForm {
   avatar?: FileList;
@@ -21,6 +22,7 @@ interface EditProfileResponse {
 }
 
 const EditProfile: NextPage = () => {
+  const router = useRouter();
   const [avatarPreview, setAvatarPreview] = useState("");
   const { user } = useUser();
   const {
@@ -74,8 +76,10 @@ const EditProfile: NextPage = () => {
         name,
       });
     }
-    editProfile({ email, phone, name });
   };
+  if (data?.ok === true) {
+    router.push("/profile");
+  }
   useEffect(() => {
     if (data && !data.ok && data.error) {
       setError("formErrors", { message: data.error });

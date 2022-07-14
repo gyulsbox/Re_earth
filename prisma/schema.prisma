@@ -127,6 +127,9 @@ model Stream {
   createdAt      DateTime        @default(now())
   updatedAt      DateTime        @updatedAt
   streamMessages StreamMessage[]
+  cloudflareId   String
+  cloudflareUrl  String
+  cloudflareKey  String
 }
 
 model StreamMessage {

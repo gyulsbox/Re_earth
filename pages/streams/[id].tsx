@@ -71,7 +71,18 @@ const Streams: NextPage = () => {
   return (
     <Layout canGoBack>
       <div className="py-10 px-4  space-y-4">
-        <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video" />
+        {data?.stream.cloudflareId ? (
+          <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video">
+            <iframe
+              className="w-full aspect-video rounded-md"
+              src={`https://iframe.videodelivery.net/${data?.stream.cloudflareId}`}
+              allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture;"
+              allowFullScreen={true}
+            ></iframe>
+          </div>
+        ) : (
+          <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video" />
+        )}
         <div className="mt-5">
           <h1 className="text-3xl font-bold text-gray-900">
             {data?.stream?.title}
@@ -80,6 +91,17 @@ const Streams: NextPage = () => {
             ${data?.stream?.price}
           </span>
           <p className=" my-6 text-gray-700">{data?.stream?.description}</p>
+          <div className="bg-orange-300 p-5 rounded-md overflow-scroll flex flex-col space-y-3">
+            <span>Stream Keys (only shown to Stream Owner)</span>
+            <span className="text-white">
+              <span className="font-medium text-gray-800">URL:</span>
+              {data?.stream.cloudflareUrl}
+            </span>
+            <span className="text-white">
+              <span className="font-medium text-gray-800">Key:</span>
+              {data?.stream.cloudflareKey}
+            </span>
+          </div>
         </div>
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Live Chat</h2>

@@ -2,8 +2,6 @@ import withHandler, { ResponseType } from "@libs/server/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
 import client from "@libs/server/client";
 import { withApiSession } from "@libs/server/withSession";
-import Id from "../../posts/[id]";
-import { TrustProductsChannelEndpointAssignmentContext } from "twilio/lib/rest/trusthub/v1/trustProducts/trustProductsChannelEndpointAssignment";
 
 async function handler(
   req: NextApiRequest,
@@ -11,6 +9,7 @@ async function handler(
 ) {
   const {
     query: { id },
+    session: { user },
   } = req;
   const stream = await client.stream.findUnique({
     where: {
@@ -31,6 +30,11 @@ async function handler(
       },
     },
   });
+  const isOwner = stream?.userId === user?.id;
+  if (stream && !isOwner) {
+    stream.cloudflareKey = "not allowed";
+    stream.cloudflareUrl = "not allowed";
+  }
   res.json({ ok: true, stream });
 }
 
