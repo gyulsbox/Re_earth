@@ -2,9 +2,10 @@ import type { NextPage } from "next";
 import FloatButton from "@components/float-button";
 import Item from "@components/item";
 import Layout from "@components/layouts/layout";
-import useSWR from "swr";
+import useSWR, { SWRConfig } from "swr";
 import { Product } from "@prisma/client";
 import "react-loading-skeleton/dist/skeleton.css";
+import client from "@libs/server/client";
 
 interface ProductResponse {
   ok: boolean;
@@ -14,21 +15,10 @@ interface ProductResponse {
 const Home: NextPage = () => {
   const { data, isValidating } = useSWR<ProductResponse>("/api/products");
   return (
-    <Layout seoTitle='Products' title="홈" hasTabBar>
+    <Layout seoTitle="Products" title="홈" hasTabBar>
       <div className="flex flex-col space-y-5 justify-center">
-        {isValidating
-          ? new Array(7).fill(1).map((_, i) => (
-              <div key={i} className="w-5/6 h-1/6 rounded-md mx-auto mt-6">
-                <div className="flex animate-pulse flex-row items-center h-full justify-center space-x-5">
-                  <div className="w-1/4 aspect-square bg-gray-300 rounded-md "></div>
-                  <div className="flex flex-col w-3/4 space-y-3">
-                    <div className="w-full bg-gray-300 h-6 rounded-md "></div>
-                    <div className="w-3/4 bg-gray-300 h-6 rounded-md "></div>
-                  </div>
-                </div>
-              </div>
-            ))
-          : data?.products?.map((product) => (
+        {data
+          ? data?.products.map((product) => (
               <Item
                 id={product.id}
                 key={product.id}
@@ -39,7 +29,8 @@ const Home: NextPage = () => {
                 hearts={product.wishCount}
                 create={product.createdAt.toString()}
               />
-            ))}
+            ))
+          : "Loading..."}
         <FloatButton href="/products/upload">
           <svg
             className="h-6 w-6"
@@ -61,4 +52,31 @@ const Home: NextPage = () => {
     </Layout>
   );
 };
-export default Home;
+
+const Page: NextPage<{ products: ProductResponse }> = ({ products }) => {
+  return (
+    <SWRConfig
+      value={{
+        fallback: {
+          "/api/products": {
+            ok: true,
+            products,
+          },
+        },
+      }}
+    >
+      <Home />
+    </SWRConfig>
+  );
+};
+
+export async function getServerSideProps() {
+  const products = await client.product.findMany({});
+  return {
+    props: {
+      products: JSON.parse(JSON.stringify(products)),
+    },
+  };
+}
+
+export default Page;
