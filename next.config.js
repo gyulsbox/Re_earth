@@ -4,6 +4,9 @@ const nextConfig = {
   images: {
     domains: ["imagedelivery.net", "videodelivery.net"],
   },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 module.exports = nextConfig;
