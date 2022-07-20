@@ -91,7 +91,7 @@ const ChatDetail: NextPage = () => {
     })();
   }, [data, chatBoxRef]);
   return (
-    <Layout canGoBack seoTitle="Chat">
+    <Layout canGoBack seoTitle="Chat Detail">
       <div
         className="py-10 pb-28 h-[100vh] overflow-y-scroll  px-4 space-y-4 scrollbar-hide"
         ref={chatBoxRef}

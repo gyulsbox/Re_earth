@@ -71,7 +71,7 @@ const Streams: NextPage = () => {
     sendMessage(form);
   };
   return (
-    <Layout canGoBack>
+    <Layout canGoBack seoTitle='Streams Detail' title={data?.stream.title}>
       <div className="py-10 px-4  space-y-4">
         {data?.stream.cloudflareId ? (
           <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video">

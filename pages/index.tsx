@@ -2,7 +2,6 @@ import type { NextPage } from "next";
 import FloatButton from "@components/float-button";
 import Item from "@components/item";
 import Layout from "@components/layouts/layout";
-import Head from "next/head";
 import useSWR from "swr";
 import { Product } from "@prisma/client";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -15,10 +14,7 @@ interface ProductResponse {
 const Home: NextPage = () => {
   const { data, isValidating } = useSWR<ProductResponse>("/api/products");
   return (
-    <Layout title="홈" hasTabBar>
-      <Head>
-        <title>Home</title>
-      </Head>
+    <Layout seoTitle='Products' title="홈" hasTabBar>
       <div className="flex flex-col space-y-5 justify-center">
         {isValidating
           ? new Array(7).fill(1).map((_, i) => (

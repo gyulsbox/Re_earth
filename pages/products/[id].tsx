@@ -66,7 +66,7 @@ const ItemDetail: NextPage = () => {
     }
   }, [user, chatData, router]);
   return (
-    <Layout title="상품상세" canGoBack>
+    <Layout seoTitle='Product Detail' title="상품상세" canGoBack>
       <div className="px-4  py-4">
         <div className="mb-8">
           <div className="relative pb-96">
