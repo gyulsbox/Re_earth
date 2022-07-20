@@ -1,10 +1,12 @@
 import useUser from "@libs/client/useUser";
 import { setClassName } from "@libs/client/utils";
+import { withSSRSession } from "@libs/server/withSession";
 import { Review, User } from "@prisma/client";
-import type { NextPage } from "next";
+import type { NextPage, NextPageContext } from "next";
 import Link from "next/link";
-import useSWR from "swr";
-import Layout from "../../components/layouts/layout";
+import useSWR, { SWRConfig } from "swr";
+import Layout from "@components/layouts/layout";
+import client from "@libs/server/client";
 
 interface ReviewWithUser extends Review {
   createdBy: User;
@@ -19,9 +21,9 @@ const Profile: NextPage = () => {
   const { user } = useUser();
   const { data } = useSWR<ReviewsResponse>("/api/reviews");
   return (
-    <Layout hasTabBar seoTitle='Mypage' title="마이페이지">
+    <Layout hasTabBar seoTitle="Mypage" title="마이페이지">
       <div className="px-4">
-        <div className="flex items-center mt-4 space-x-3">
+        <div className="flex items-center mt-4 pb-4 space-x-3 border-b-2">
           {user?.avatar ? (
             <img
               className="w-16 h-16 bg-slate-500 rounded-full"
@@ -37,7 +39,7 @@ const Profile: NextPage = () => {
             </Link>
           </div>
         </div>
-        <div className="mt-10 flex justify-around">
+        <div className="mt-6 flex justify-around">
           <Link href="/profile/sold">
             <a className="flex flex-col items-center">
               <div className="w-14 h-14 text-white bg-orange-400 rounded-full flex items-center justify-center">
@@ -146,4 +148,32 @@ const Profile: NextPage = () => {
     </Layout>
   );
 };
-export default Profile;
+
+const Page: NextPage<{ profile: User }> = ({ profile }) => {
+  return (
+    <SWRConfig
+      value={{
+        fallback: {
+          "/api/users/me": { ok: true, profile },
+        },
+      }}
+    >
+      <Profile />
+    </SWRConfig>
+  );
+};
+
+export const getServerSideProps = withSSRSession(async function ({
+  req,
+}: NextPageContext) {
+  const profile = await client.user.findUnique({
+    where: { id: req?.session.user?.id },
+  });
+  return {
+    props: {
+      profile: JSON.parse(JSON.stringify(profile)),
+    },
+  };
+});
+
+export default Page;
