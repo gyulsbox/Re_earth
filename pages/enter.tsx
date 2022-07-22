@@ -79,7 +79,7 @@ const Enter: NextPage = () => {
                   className={setClassName(
                     "pb-4 font-medium text-sm border-b-2",
                     method === "email"
-                      ? " border-orange-500 text-orange-400"
+                      ? " border-lime-500 text-lime-400"
                       : "border-transparent hover:text-gray-400 text-gray-500",
                   )}
                   onClick={onEmailClick}
@@ -90,7 +90,7 @@ const Enter: NextPage = () => {
                   className={setClassName(
                     "pb-4 font-medium text-sm border-b-2",
                     method === "phone"
-                      ? " border-orange-500 text-orange-400"
+                      ? " border-lime-500 text-lime-400"
                       : "border-transparent hover:text-gray-400 text-gray-500",
                   )}
                   onClick={onPhoneClick}
@@ -170,4 +170,3 @@ const Enter: NextPage = () => {
   );
 };
 export default Enter;
-
