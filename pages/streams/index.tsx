@@ -27,7 +27,7 @@ const Streams: NextPage = () => {
     }
   }, [page, router]);
   return (
-    <Layout hasTabBar seoTitle='Streams' title="라이브">
+    <Layout hasTabBar seoTitle="Streams" title="라이브">
       <div className=" divide-y-[1px] space-y-4">
         {data?.streams?.map((stream) => (
           <Link key={stream.id} href={`/streams/${stream.id}`}>
@@ -35,7 +35,7 @@ const Streams: NextPage = () => {
               <div className="w-full relative overflow-hidden rounded-md shadow-sm bg-slate-300 aspect-video">
                 <Image
                   layout="fill"
-                  src={`https://videodelivery.net/${stream.cloudflareId}/thumbnails/thumbnail.jpg?time=1s&height=320`}
+                  src={`https://videodelivery.net/5ac9dcb20f370acfddfe65b50b51decb/thumbnails/thumbnail.jpg`}
                 />
               </div>
               <h1 className="text-2xl mt-2 font-bold text-gray-900">
