@@ -32,6 +32,11 @@ async function handler(
         ],
       },
       include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
         messages: {
           select: {
             id: true,
