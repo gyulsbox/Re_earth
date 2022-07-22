@@ -1,16 +1,18 @@
 import { setClassName } from "@libs/client/utils";
-import Image from 'next/image';
+import Image from "next/image";
 
 interface MessageProps {
   message: string;
   reversed?: boolean;
   avatarUrl?: string;
+  createdAt: Date;
 }
 
 export default function Message({
   message,
   avatarUrl,
   reversed,
+  createdAt,
 }: MessageProps) {
   return (
     <div
@@ -19,20 +21,24 @@ export default function Message({
         reversed ? "flex-row-reverse space-x-reverse" : "",
       )}
     >
-      {avatarUrl ? (
-        <Image
-          width={40}
-          height={40}
-          src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${avatarUrl}/avatar`}
-          className="w-8 h-8 rounded-full"
-          alt="chat-avartar"
-        />
-      ) : (
-        <div className="w-8 h-8 rounded-full bg-slate-400" />
-      )}
-
-      <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-        <p>{message}</p>
+      {!reversed ? (
+        avatarUrl ? (
+          <Image
+            width={40}
+            height={40}
+            src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${avatarUrl}/avatar`}
+            className="w-8 h-8 rounded-full"
+            alt="chat-avartar"
+          />
+        ) : (
+          <div className="w-8 h-8 rounded-full bg-slate-400" />
+        )
+      ) : null}
+      <div className="text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
+        <p className={setClassName(reversed ? "text-end" : "")}>{message}</p>
+      </div>
+      <div className="mt-4">
+        <p className="text-xs">{String(createdAt)}</p>
       </div>
     </div>
   );
