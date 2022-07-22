@@ -6,7 +6,7 @@ import useSWR from "swr";
 import { Comment, Post, User } from "@prisma/client";
 import Link from "next/link";
 import useMutation from "@libs/client/useMutation";
-import { setClassName } from "@libs/client/utils";
+import { formatTime, setClassName } from "@libs/client/utils";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import Image from "next/image";
@@ -117,7 +117,7 @@ const CommunityPostDetail: NextPage<CommunityPostResponse> = ({ post }) => {
                 {post?.question}
               </span>
               <span className="flex justify-end text-sm">
-                {String(post?.createdAt)}
+                {formatTime(post?.createdAt)}
               </span>
             </div>
             <p className="mt-2 text-base">{post?.contents}</p>
@@ -188,7 +188,7 @@ const CommunityPostDetail: NextPage<CommunityPostResponse> = ({ post }) => {
                   {comment.user.name}
                 </span>
                 <span className="text-xs text-gray-500 block ">
-                  {String(comment.createdAt)}
+                  {formatTime(comment.createdAt)}
                 </span>
                 <p className="text-gray-700 mt-2">{comment.comment}</p>
               </div>

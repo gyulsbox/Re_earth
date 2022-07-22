@@ -8,6 +8,8 @@ import { Chat } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import useMutation from "@libs/client/useMutation";
 import React, { useEffect } from "react";
+import { formatTime } from "@libs/client/utils";
+import moment from "moment";
 
 interface ChatMessage {
   id: number;
@@ -48,8 +50,6 @@ const ChatDetail: NextPage = () => {
       refreshInterval: 1000,
     },
   );
-  console.log(data);
-
   useEffect(() => {
     if (data?.ok === false) {
       router.push("/chats");
@@ -72,6 +72,7 @@ const ChatDetail: NextPage = () => {
               ...prev.chat.messages,
               {
                 id: Date.now(),
+                createdAt: moment(),
                 message: form.message,
                 user: { ...user },
               },

@@ -1,11 +1,11 @@
-import { setClassName } from "@libs/client/utils";
+import { formatTime, setClassName } from "@libs/client/utils";
 import Image from "next/image";
 
 interface MessageProps {
   message: string;
   reversed?: boolean;
   avatarUrl?: string;
-  createdAt: Date;
+  createdAt?: Date;
 }
 
 export default function Message({
@@ -38,7 +38,7 @@ export default function Message({
         <p className={setClassName(reversed ? "text-end" : "")}>{message}</p>
       </div>
       <div className="mt-4">
-        <p className="text-xs">{String(createdAt)}</p>
+        <p className="text-xs">{formatTime(createdAt!)}</p>
       </div>
     </div>
   );

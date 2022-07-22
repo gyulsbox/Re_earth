@@ -6,6 +6,7 @@ import useSWR, { SWRConfig } from "swr";
 import { Product } from "@prisma/client";
 import "react-loading-skeleton/dist/skeleton.css";
 import client from "@libs/server/client";
+import { formatTime } from "@libs/client/utils";
 
 interface ProductResponse {
   ok: boolean;
@@ -27,7 +28,7 @@ const Home: NextPage = () => {
                 price={product.price}
                 comments={product.commentsCount}
                 hearts={product.wishCount}
-                create={product.createdAt.toString()}
+                create={formatTime(product.createdAt)}
               />
             ))
           : "Loading..."}
