@@ -8,7 +8,7 @@ async function handler(
   res: NextApiResponse<ResponseType>,
 ) {
   const {
-    body: { question, longitude, latitude },
+    body: { question, longitude, latitude, categories, contents },
     session: { user },
   } = req;
   if (req.method === "POST") {
@@ -17,6 +17,8 @@ async function handler(
         question,
         longitude,
         latitude,
+        categories,
+        contents,
         user: {
           connect: {
             id: user?.id,

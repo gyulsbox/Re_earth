@@ -36,7 +36,6 @@ async function handler(
       comment,
     },
   });
-
   if (!post) {
     res.status(404).json({
       ok: false,

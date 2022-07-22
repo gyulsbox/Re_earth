@@ -53,7 +53,6 @@ async function handler(
       },
     }),
   );
-
   if (!post) {
     res.status(404).json({
       ok: false,
