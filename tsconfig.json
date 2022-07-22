@@ -21,6 +21,6 @@
       "@pages/*": ["pages/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "tests/unit/pages/home.spec.js"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "tests/unit/pages/home.spec.js", "pages/middleware.ts"],
   "exclude": ["node_modules"]
 }
