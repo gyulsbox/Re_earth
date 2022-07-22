@@ -70,7 +70,6 @@ const Enter: NextPage = () => {
           </form>
         ) : (
           <>
-            {" "}
             <div className="flex flex-col items-center">
               <h5 className="text-sm text-gray-500 font-medium">
                 Enter using:
@@ -130,7 +129,6 @@ const Enter: NextPage = () => {
             </form>
           </>
         )}
-
         <div className="mt-8">
           <div className="relative">
             <div className="absolute w-full border-t border-gray-300" />
@@ -172,3 +170,4 @@ const Enter: NextPage = () => {
   );
 };
 export default Enter;
+
