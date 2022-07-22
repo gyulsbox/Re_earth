@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.blog-post-content h1 {
+  @apply my-5 text-sky-800 text-lg;
+}
+
+.blog-post-content p {
+  @apply mb-2 text-gray-600;
+}
