@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
 import Layout from "@components/layouts/layout";
-import ProductList from '@components/product-list';
+import ProductList from "@components/product-list";
 
 const Sold: NextPage = () => {
   return (
-    <Layout title="판매내역" canGoBack>
+    <Layout seoTitle="Sold" title="판매내역" canGoBack>
       <div className="flex flex-col space-y-5 pb-10  divide-y">
         <ProductList kind="sales" />
       </div>

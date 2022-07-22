@@ -4,7 +4,7 @@ import ProductList from "@components/product-list";
 
 const Wishlist: NextPage = () => {
   return (
-    <Layout title="관심목록" canGoBack>
+    <Layout seoTitle="Wishlist" title="관심목록" canGoBack>
       <div className="flex flex-col space-y-5 pb-10  divide-y">
         <ProductList kind="wishs" />
       </div>
