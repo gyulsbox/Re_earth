@@ -4,7 +4,8 @@ import FloatButton from "@components/float-button";
 import Layout from "@components/layouts/layout";
 import useSWR from "swr";
 import { Post, User } from "@prisma/client";
-import useCoords from '@libs/client/useCoords';
+import client from "@libs/server/client";
+import useCoords from "@libs/client/useCoords";
 
 interface PostWithUser extends Post {
   user: User;
@@ -19,14 +20,14 @@ interface PostsResponse {
   posts: PostWithUser[];
 }
 
-const Community: NextPage = () => {
+const Community: NextPage<PostsResponse> = ({ posts }) => {
   // const { latitude, longitude } = useCoords();
   // const { data } = useSWR<PostsResponse>( latitude && longitude ? `/api/posts?latitude=${latitude}&longitude=${longitude}` : null);
   const { data } = useSWR<PostsResponse>(`/api/posts`);
   return (
-    <Layout hasTabBar seoTitle='Community' title="동네생활">
+    <Layout hasTabBar seoTitle="Community" title="동네생활">
       <div className="space-y-4 divide-y-[2px]">
-        {data?.posts?.map((post) => (
+        {posts?.map((post) => (
           <Link key={post.id} href={`/community/${post.id}`}>
             <a className="flex cursor-pointer flex-col pt-4 items-start">
               <span className="flex ml-4 items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
@@ -99,4 +100,30 @@ const Community: NextPage = () => {
     </Layout>
   );
 };
+
+export async function getStaticProps() {
+  const posts = await client?.post.findMany({
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          avatar: true,
+        },
+      },
+      _count: {
+        select: {
+          empathy: true,
+          comments: true,
+        },
+      },
+    },
+  });
+  return {
+    props: {
+      posts: JSON.parse(JSON.stringify(posts)),
+    },
+  };
+}
+
 export default Community;
