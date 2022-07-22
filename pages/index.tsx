@@ -19,7 +19,7 @@ const Home: NextPage = () => {
     <Layout seoTitle="Products" title="홈" hasTabBar>
       <div className="flex flex-col space-y-5 justify-center">
         {data
-          ? data?.products.map((product) => (
+          ? data?.products?.map((product) => (
               <Item
                 id={product.id}
                 key={product.id}

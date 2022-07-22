@@ -23,7 +23,7 @@ interface ChatMessage {
 
 interface ChatWithMessages extends Chat {
   messages: ChatMessage[];
-  user: { id: number };
+  user: { id: number; name: string };
   product: {
     user: {
       id: number;
@@ -95,7 +95,11 @@ const ChatDetail: NextPage = () => {
     })();
   }, [data, chatBoxRef]);
   return (
-    <Layout canGoBack seoTitle="Chat Detail">
+    <Layout
+      canGoBack
+      seoTitle="Chat Detail"
+      title={data ? '채팅' : "Loading..."}
+    >
       <div
         className="py-10 pb-28 h-[100vh] overflow-y-scroll  px-4 space-y-4 scrollbar-hide"
         ref={chatBoxRef}

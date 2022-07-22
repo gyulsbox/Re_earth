@@ -45,6 +45,7 @@ const Enter: NextPage = () => {
   const onTokenValid = (validForm: TokenForm) => {
     if (tokenLoading) return;
     confirmToken(validForm);
+
   };
   const router = useRouter();
   useEffect(() => {
@@ -70,7 +71,7 @@ const Enter: NextPage = () => {
               label="Confirmation Token"
               type="text"
             />
-            <Button text={loading ? "Loading" : "Confirm Token"} />
+            <Button text={tokenLoading ? "Loading" : "Confirm Token"} />
           </form>
         ) : (
           <>
