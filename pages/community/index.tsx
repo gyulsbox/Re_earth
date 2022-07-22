@@ -6,7 +6,7 @@ import useSWR from "swr";
 import { Post, User } from "@prisma/client";
 import client from "@libs/server/client";
 import useCoords from "@libs/client/useCoords";
-import { formatTime } from '@libs/client/utils';
+import { formatTime } from "@libs/client/utils";
 
 interface PostWithUser extends Post {
   user: User;
@@ -35,7 +35,7 @@ const Community: NextPage<PostsResponse> = ({ posts }) => {
                 {post.categories}
               </span>
               <div className="mt-2 px-4 text-gray-700">
-                <span className="text-orange-500 font-medium">Q. </span>
+                <span className="text-lime-500 font-medium">Q. </span>
                 {post.question}
               </div>
               <div className="mt-5 px-4 flex items-center justify-between w-full text-gray-500 font-medium text-xs">
