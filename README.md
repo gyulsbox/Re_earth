@@ -1,6 +1,7 @@
-# Project unnamed
+# Project RE:EARTH
 ```
-프로젝트 및 문서 미완성.
+220620 Project Unnamed 시작.
+220723 프로토타입 완성 및 vercel 배포.
 ```
 
 ## Git Commit Prefix
