@@ -27,7 +27,7 @@ export default function Layout({
       <Head>
         <title>{seoTitle} | Re:earth </title>
       </Head>
-      <div className="bg-white w-full h-12 max-w-xl justify-center text-lg px-10 font-medium fixed text-gray-800 border-b top-0 flex items-center z-20">
+      <div className="bg-white w-full h-12 max-w-md justify-center text-lg px-10 font-medium fixed text-gray-800 border-b top-0 flex items-center z-20">
         {canGoBack ? (
           <button onClick={onClick} className="absolute left-4">
             <svg
@@ -56,7 +56,7 @@ export default function Layout({
         {children}
       </div>
       {hasTabBar ? (
-        <nav className="bg-white max-w-xl text-gray-700 border-t fixed bottom-0 w-full px-10 pb-5 pt-3 flex justify-between text-xs">
+        <nav className="bg-white max-w-md text-gray-700 border-t fixed bottom-0 w-full px-10 pb-5 pt-3 flex justify-between text-xs">
           <Link href="/">
             <a
               className={setClassName(
