@@ -14,7 +14,7 @@ async function handler(
   } = req;
   const post = await client.post.findUnique({
     where: {
-      id: +id.toString(),
+      id: +id!.toString(),
     },
     select: {
       id: true,
@@ -30,7 +30,7 @@ async function handler(
       },
       post: {
         connect: {
-          id: +id.toString(),
+          id: +id!.toString(),
         },
       },
       comment,

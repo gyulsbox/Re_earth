@@ -16,13 +16,13 @@ async function handler(
       where: {
         OR: [
           {
-            id: +id.toString(),
+            id: +(id ?? 0).toString(),
             user: {
               id: user?.id,
             },
           },
           {
-            id: +id.toString(),
+            id: +(id ?? 0).toString(),
             product: {
               user: {
                 id: user?.id,
@@ -68,7 +68,7 @@ async function handler(
         message: body.form.message,
         chat: {
           connect: {
-            id: +id.toString(),
+            id: +(id ?? 0).toString(),
           },
         },
         product: {

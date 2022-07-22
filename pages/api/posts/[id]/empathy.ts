@@ -14,7 +14,7 @@ async function handler(
   const alreadeyExists = await client.empathy.findFirst({
     where: {
       userId: user?.id,
-      postId: +id.toString(),
+      postId: +id!.toString(),
     },
     select: {
       id: true,
@@ -37,7 +37,7 @@ async function handler(
         },
         post: {
           connect: {
-            id: +id.toString(),
+            id: +id!.toString(),
           },
         },
       },

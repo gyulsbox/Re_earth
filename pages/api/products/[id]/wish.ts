@@ -13,7 +13,7 @@ async function handler(
   } = req;
   const alreadyExists = await client.record.findFirst({
     where: {
-      productId: +id.toString(),
+      productId: +id!.toString(),
       userId: user?.id,
       kind: "Wish",
     },
@@ -34,7 +34,7 @@ async function handler(
         },
         product: {
           connect: {
-            id: +id.toString(),
+            id: +id!.toString(),
           },
         },
         kind: "Wish",
@@ -43,13 +43,13 @@ async function handler(
   }
   const wish = await client.record.count({
     where: {
-      productId: +id.toString(),
+      productId: +id!.toString(),
       kind: "Wish",
     },
   });
   await client.product.update({
     where: {
-      id: +id.toString(),
+      id: +id!.toString(),
     },
     data: {
       wishCount: wish,

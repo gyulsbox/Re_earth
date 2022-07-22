@@ -12,12 +12,12 @@ async function handler(
   } = req;
   const chats = await client.chat.count({
     where: {
-      productId: +id.toString(),
+      productId: +id!.toString(),
     },
   });
   await client.product.update({
     where: {
-      id: +id.toString(),
+      id: +id!.toString(),
     },
     data: {
       commentsCount: chats,
