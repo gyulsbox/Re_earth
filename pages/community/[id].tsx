@@ -181,9 +181,9 @@ const CommunityPostDetail: NextPage<CommunityPostResponse> = ({ post }) => {
                   height={48}
                 />
               ) : (
-                <div className="w-8 h-8 bg-slate-200 rounded-full" />
+                <div className="w-12 h-12 bg-slate-200 rounded-full" />
               )}
-              <div>
+              <div className="w-3/4">
                 <span className="text-sm block font-medium text-gray-700">
                   {comment.user.name}
                 </span>
