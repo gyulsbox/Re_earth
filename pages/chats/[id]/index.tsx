@@ -12,6 +12,7 @@ import React, { useEffect } from "react";
 interface ChatMessage {
   id: number;
   message: string;
+  createdAt: Date;
   user: {
     avatar?: string;
     id: number;
@@ -47,6 +48,8 @@ const ChatDetail: NextPage = () => {
       refreshInterval: 1000,
     },
   );
+  console.log(data);
+
   useEffect(() => {
     if (data?.ok === false) {
       router.push("/chats");
@@ -102,10 +105,11 @@ const ChatDetail: NextPage = () => {
             message={message.message}
             reversed={message.user?.id === user?.id}
             avatarUrl={message.user?.avatar}
+            createdAt={message.createdAt}
           />
         ))}
       </div>
-      <div className="fixed py-2 bg-white  bottom-5 inset-x-0">
+      <div className="fixed py-2 bg-white bottom-5 inset-x-0 mx-2">
         <form
           onSubmit={handleSubmit(onValid)}
           className="flex relative max-w-md items-center w-full mx-auto"
@@ -113,10 +117,10 @@ const ChatDetail: NextPage = () => {
           <input
             {...register("message", { required: true })}
             type="text"
-            className="shadow-sm rounded-full w-full border-gray-300 focus:ring-orange-500 focus:outline-none pr-12 focus:border-orange-500"
+            className="shadow-sm rounded-full w-full border-gray-300 focus:ring-lime-500 focus:outline-none pr-12 focus:border-lime-500"
           />
           <div className="absolute inset-y-0 flex py-1.5 pr-1.5 right-0">
-            <button className="flex focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 items-center bg-orange-500 rounded-full px-3 hover:bg-orange-600 text-sm text-white">
+            <button className="flex focus:ring-2 focus:ring-offset-2 focus:ring-lime-500 items-center bg-lime-500 rounded-full px-3 hover:bg-lime-600 text-sm text-white">
               &rarr;
             </button>
           </div>
