@@ -64,6 +64,7 @@ model Post {
   userId     Int
   categories String    @default("chat")
   question   String    @db.MediumText
+  contents   String    @default("default") @db.MediumText
   latitude   Float?
   longitude  Float?
   createdAt  DateTime  @default(now())
