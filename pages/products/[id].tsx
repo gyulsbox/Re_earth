@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Button from "@components/button";
 import Layout from "@components/layouts/layout";
 import { useRouter } from "next/router";
@@ -13,6 +13,7 @@ import Image from "next/image";
 import useUser from "@libs/client/useUser";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import client from "@libs/server/client";
 
 interface ProductWithUser extends Product {
   user: User;
@@ -25,7 +26,10 @@ interface ItemDetailResponse {
   relatedProducts: Product[];
 }
 
-const ItemDetail: NextPage = () => {
+const ItemDetail: NextPage<ItemDetailResponse> = ({
+  product,
+  relatedProducts,
+}) => {
   const { user } = useUser();
   const router = useRouter();
   const { mutate } = useSWRConfig();
@@ -65,34 +69,35 @@ const ItemDetail: NextPage = () => {
       router.push(`/chats/${chatData.chat.id}`);
     }
   }, [user, chatData, router]);
+  // if (router.isFallback) {
+  //   return <Layout title='Loading for you'>
+  //     <span>I Love you</span>
+  //   </Layout>
+  // }
   return (
-    <Layout seoTitle='Product Detail' title="상품상세" canGoBack>
+    <Layout seoTitle="Product Detail" title="상품상세" canGoBack>
       <div className="px-4  py-4">
         <div className="mb-8">
           <div className="relative pb-96">
-            {data?.product?.image ? (
-              <Image
-                layout="fill"
-                src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${data?.product.image}/public`}
-                className="object-cover"
-                alt="product-name"
-              />
-            ) : (
-              <div className="bg-slate-300 object-cover" />
-            )}
+            <Image
+              layout="fill"
+              src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${product.image}/public`}
+              className="object-cover"
+              alt="product-name"
+            />
           </div>
           <div className="flex cursor-pointer py-3 border-t border-b items-center space-x-3">
             <Image
               className="w-12 h-12 rounded-full bg-slate-300"
-              src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${data?.product?.user?.avatar}/public`}
+              src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${product?.user?.avatar}/public`}
               width={48}
               height={48}
             />
             <div>
               <p className="text-sm font-medium text-gray-700">
-                {isValidating ? <Skeleton /> : data?.product?.user?.name}
+                {product?.user?.name}
               </p>
-              <Link href={`/users/profiles/${data?.product?.user?.id}`}>
+              <Link href={`/users/profiles/${product?.user?.id}`}>
                 <a className="text-xs font-medium text-gray-500">
                   View profile &rarr;
                 </a>
@@ -101,18 +106,12 @@ const ItemDetail: NextPage = () => {
           </div>
           <div className="mt-5">
             <h1 className="text-3xl font-bold text-gray-900">
-              {isValidating ? <Skeleton /> : data?.product?.name}
+              {product?.name}
             </h1>
             <span className="text-2xl block mt-3 text-gray-900">
-              {isValidating ? (
-                <Skeleton />
-              ) : (
-                `${data?.product?.price.toLocaleString("ko-KR")}원`
-              )}
+              {`${product?.price.toLocaleString("ko-KR")}원`}
             </span>
-            <p className=" my-6 text-gray-700">
-              {isValidating ? <Skeleton /> : data?.product?.description}
-            </p>
+            <p className=" my-6 text-gray-700">{product?.description}</p>
             <div className="flex items-center justify-between space-x-2">
               <form className="w-full" onSubmit={handleSubmit(onValid)}>
                 <Button large text="Talk to seller" />
@@ -163,7 +162,7 @@ const ItemDetail: NextPage = () => {
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Similar items</h2>
           <div className=" mt-6 grid grid-cols-2 gap-4">
-            {data?.relatedProducts.map((product) => (
+            {relatedProducts.map((product) => (
               <div key={product.id}>
                 <Link href={`/products/${product.id}`}>
                   <a className="text-xs font-medium text-gray-500">
@@ -182,14 +181,10 @@ const ItemDetail: NextPage = () => {
                   </a>
                 </Link>
                 <h3 className="text-gray-700 font-bold -mb-1">
-                  {isValidating ? <Skeleton /> : product?.name}
+                  {product?.name}
                 </h3>
                 <span className="text-sm font-medium text-gray-900">
-                  {isValidating ? (
-                    <Skeleton />
-                  ) : (
-                    `${product?.price.toLocaleString("ko-KR")}원`
-                  )}
+                  {`${product?.price.toLocaleString("ko-KR")}원`}
                 </span>
               </div>
             ))}
@@ -199,4 +194,55 @@ const ItemDetail: NextPage = () => {
     </Layout>
   );
 };
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return {
+    paths: [],
+    fallback: "blocking",
+  };
+};
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  if (!context?.params?.id) {
+    return {
+      props: {},
+    };
+  }
+  const product = await client.product.findUnique({
+    where: {
+      id: +context.params.id.toString(),
+    },
+    include: {
+      user: {
+        select: {
+          id: true,
+          name: true,
+          avatar: true,
+        },
+      },
+    },
+  });
+  const terms = product?.name.split(" ").map((word) => ({
+    name: {
+      contains: word,
+    },
+  }));
+  const relatedProducts = await client.product.findMany({
+    where: {
+      OR: terms,
+      AND: {
+        id: {
+          not: product?.id,
+        },
+      },
+    },
+  });
+  return {
+    props: {
+      product: JSON.parse(JSON.stringify(product)),
+      relatedProducts: JSON.parse(JSON.stringify(relatedProducts)),
+    },
+  };
+};
+
 export default ItemDetail;
