@@ -43,25 +43,42 @@ async function handler(
     console.log(message);
   } else if (email) {
     const mailOptions = {
-      from: process.env.MAIL_ID,
+      from: {
+        name: "Re:earth",
+        address: process.env.MAIL_ID,
+      },
+      replyTo: email,
       to: email,
       subject: "Re:Earth Verification Code ",
       text: `Hello! Your Authentication Code : ${payload}`,
     };
-    const result = await smtpTransport.sendMail(
-      mailOptions,
-      (error, responses) => {
+
+    await new Promise((resolve, reject) => {
+      // verify connection configuration
+      smtpTransport.verify(function (error, success) {
         if (error) {
           console.log(error);
-          return null;
+          reject(error);
         } else {
-          console.log(responses);
-          return null;
+          console.log("Server is ready to take our messages");
+          resolve(success);
         }
-      },
-    );
+      });
+    });
+
+    await new Promise((resolve, reject) => {
+      // send mail
+      smtpTransport.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          console.log(info);
+          resolve(info);
+        }
+      });
+    });
     smtpTransport.close();
-    console.log(result);
   }
   return res.json({
     ok: true,
