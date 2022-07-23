@@ -45,7 +45,7 @@ async function handler(
     const mailOptions = {
       from: {
         name: "Re:earth",
-        address: process.env.MAIL_ID,
+        address: process.env.MAIL_ID!,
       },
       replyTo: email,
       to: email,
