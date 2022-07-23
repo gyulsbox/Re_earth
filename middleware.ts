@@ -1,13 +1,25 @@
-import type { NextRequest, NextFetchEvent } from "next/server";
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 
-export default function middleware(req: NextRequest, ev: NextFetchEvent) {
-  // if (req.ua?.isBot) {
-  //   return new Response("Please don't be a bot. Be human.", { status: 403 });
-  // }
-  // if (!req.url.includes("/api")) {
-  //   if (!req.url.includes("/enter") && !req.cookies.get("reearthSession")) {
-  //     return NextResponse.redirect(`${req.nextUrl.origin}/enter`);
-  //   }
-  // }
+const PUBLIC_FILE = /\.(.*)$/;
+
+// const isMobile = (userAgent: string) =>
+//   /iPhone|iPad|iPod|Android/i.test(userAgent);
+
+export function middleware(req: NextRequest) {
+  const { pathname, origin } = req.nextUrl;
+  const session = req.cookies.getWithOptions("reearthSession");
+  if (
+    // pathname.startsWith("/_next") || // exclude Next.js internals
+    pathname.startsWith("/api") || //  exclude all API routes
+    pathname.startsWith("/static") || // exclude static files
+    pathname.includes(".") || // exclude all files in the public folder
+    PUBLIC_FILE.test(pathname)
+  )
+    return NextResponse.next();
+  if (!pathname.includes("/api")) {
+    if (!pathname.includes("/enter") && !session) {
+      return NextResponse.redirect(new URL("/enter", req.url));
+    }
+  }
+  return NextResponse.next();
 }
