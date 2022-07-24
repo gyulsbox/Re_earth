@@ -23,8 +23,8 @@ export default function Item({
   return (
     <Link href={`/products/${id}`}>
       <a className="flex px-4 pt-5 cursor-pointer justify-between w-full">
-        <div className="flex space-x-4 w-20 h-20">
-          {photo.length > 10 ? (
+        <div className="flex space-x-4 w-3/12 h-20">
+          {photo ? (
             <Image
               className="w-20 h-20 bg-gray-400 rounded-md"
               src={`https://imagedelivery.net/w46l_DmHQSMJLI8NrmR8QQ/${photo}/productPreview`}
@@ -36,7 +36,9 @@ export default function Item({
           )}
         </div>
         <div className="pt-1 pl-1.5 flex flex-col space-y-1 w-7/12">
-          <h3 className="text-sm font-medium text-gray-900">{title}</h3>
+          <h3 className="text-sm font-medium text-gray-900 truncate">
+            {title}
+          </h3>
           <span className="text-xs font-extralight">{create}</span>
           <span className="font-bold mt-1 text-gray-900">
             {price.toLocaleString("ko-KR")}원
