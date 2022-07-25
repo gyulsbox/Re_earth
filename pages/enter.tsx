@@ -52,12 +52,15 @@ const Enter: NextPage = () => {
       router.push("/");
     }
   }, [tokenData, router]);
+  const logo = "/static/logos.png";
   return (
-    <div className="mt-16 px-4">
+    <div className="mt-8 px-4">
       <Head>
         <title>Login | Re:earth </title>
       </Head>
-      <h3 className="text-3xl font-bold text-center">Re:earth</h3>
+      <div className="flex w-full mx-auto -mb-10">
+        <img src={logo} alt="reearthlogo" />
+      </div>
       <div className="mt-12">
         {data?.ok ? (
           <form
@@ -67,17 +70,14 @@ const Enter: NextPage = () => {
             <Input
               register={tokenRegister("token", { required: true })}
               name="token"
-              label="Confirmation Token"
+              label="토큰을 입력하세요"
               type="text"
             />
-            <Button text={tokenLoading ? "Loading" : "Confirm Token"} />
+            <Button text={tokenLoading ? "로딩중..." : "토큰 인증"} />
           </form>
         ) : (
           <>
             <div className="flex flex-col items-center">
-              <h5 className="text-sm text-gray-500 font-medium">
-                Enter using:
-              </h5>
               <div className="grid  border-b  w-full mt-8 grid-cols-2 ">
                 <button
                   className={setClassName(
@@ -88,7 +88,7 @@ const Enter: NextPage = () => {
                   )}
                   onClick={onEmailClick}
                 >
-                  Email
+                  이메일
                 </button>
                 <button
                   className={setClassName(
@@ -99,7 +99,7 @@ const Enter: NextPage = () => {
                   )}
                   onClick={onPhoneClick}
                 >
-                  Phone
+                  전화번호
                 </button>
               </div>
             </div>
@@ -111,7 +111,7 @@ const Enter: NextPage = () => {
                 <Input
                   register={register("email", { required: true })}
                   name="email"
-                  label="Email address"
+                  label="이메일 주소"
                   type="email"
                 />
               ) : null}
@@ -119,16 +119,20 @@ const Enter: NextPage = () => {
                 <Input
                   register={register("phone", { required: true })}
                   name="phone"
-                  label="Phone number"
+                  label="전화번호"
                   type="number"
                   kind="phone"
                 />
               ) : null}
               {method === "email" ? (
-                <Button text={loading ? "Loading" : "Get login link"} />
+                <Button
+                  text={loading ? "로딩중..." : "단발성 로그인 토큰 요청"}
+                />
               ) : null}
               {method === "phone" ? (
-                <Button text={loading ? "Loading" : "Get one-time password"} />
+                <Button
+                  text={loading ? "로딩중..." : "단발성 로그인 토큰 요청"}
+                />
               ) : null}
             </form>
           </>
@@ -138,7 +142,7 @@ const Enter: NextPage = () => {
             <div className="absolute w-full border-t border-gray-300" />
             <div className="relative -top-3 text-center ">
               <span className="bg-white px-2 text-sm text-gray-500">
-                Or enter with
+                로그인 옵션
               </span>
             </div>
           </div>
