@@ -125,10 +125,10 @@ const Streams: NextPage = () => {
               <input
                 {...register("message", { required: true })}
                 type="text"
-                className="shadow-sm rounded-full w-full border-gray-300 focus:ring-lime-500 focus:outline-none pr-12 focus:border-lime-500"
+                className="shadow-sm rounded-full w-full border-gray-300 focus:ring-[#8a7d72] focus:outline-none pr-12 focus:border-[#8a7d72]"
               />
               <div className="absolute inset-y-0 flex py-1.5 pr-1.5 right-0">
-                <button className="flex focus:ring-2 focus:ring-offset-2 focus:ring-lime-500 items-center bg-lime-500 rounded-full px-3 hover:bg-lime-600 text-sm text-white">
+                <button className="flex focus:ring-2 focus:ring-offset-2 focus:ring-[#8a7d72] items-center bg-[#8a7d72] rounded-full px-3 hover:bg-[#8a7d72] text-sm text-white">
                   &rarr;
                 </button>
               </div>

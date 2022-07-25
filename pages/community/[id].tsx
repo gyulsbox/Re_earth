@@ -201,7 +201,7 @@ const CommunityPostDetail: NextPage<CommunityPostResponse> = ({ post }) => {
             name="description"
             placeholder="내용을 적어주세요"
           />
-          <button className="mt-2 w-full bg-lime-500 hover:bg-lime-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-lime-500 focus:outline-none ">
+          <button className="mt-2 w-full bg-[#8a7d72] hover:bg-[#8a7d72] text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-[#8a7d72] focus:outline-none ">
             {commentLoading ? "로딩중..." : "작성"}
           </button>
         </form>

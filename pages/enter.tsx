@@ -70,7 +70,7 @@ const Enter: NextPage = () => {
             <Input
               register={tokenRegister("token", { required: true })}
               name="token"
-              label="토큰을 입력하세요"
+              label="토큰"
               type="text"
             />
             <Button text={tokenLoading ? "로딩중..." : "토큰 인증"} />
@@ -83,7 +83,7 @@ const Enter: NextPage = () => {
                   className={setClassName(
                     "pb-4 font-medium text-sm border-b-2",
                     method === "email"
-                      ? " border-lime-500 text-lime-400"
+                      ? " border-[#8a7d72] text-[#8a7d72]"
                       : "border-transparent hover:text-gray-400 text-gray-500",
                   )}
                   onClick={onEmailClick}
@@ -94,7 +94,7 @@ const Enter: NextPage = () => {
                   className={setClassName(
                     "pb-4 font-medium text-sm border-b-2",
                     method === "phone"
-                      ? " border-lime-500 text-lime-400"
+                      ? " border-[#8a7d72] text-[#8a7d72]"
                       : "border-transparent hover:text-gray-400 text-gray-500",
                   )}
                   onClick={onPhoneClick}

@@ -16,7 +16,7 @@ export default function Button({
     <button
       {...rest}
       className={setClassName(
-        "w-full bg-lime-500 hover:bg-lime-600 text-white  px-4 border border-transparent rounded-md shadow-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-lime-500 focus:outline-none",
+        "w-full bg-[#8a7d72] hover:bg-[#8a7d72] text-white  px-4 border border-transparent rounded-md shadow-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-[#8a7d72] focus:outline-none",
         large ? "py-3 text-base" : "py-2 text-sm ",
       )}
     >

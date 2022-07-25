@@ -16,7 +16,7 @@ export default function BottomNavBar({ hasTabBar }: BottomNavBarProps) {
             className={setClassName(
               "flex flex-col items-center space-y-2 ",
               router?.pathname === "/"
-                ? "text-lime-700"
+                ? "text-[#8a7d72]"
                 : "hover:text-gray-500 transition-colors",
             )}
           >
@@ -42,7 +42,7 @@ export default function BottomNavBar({ hasTabBar }: BottomNavBarProps) {
             className={setClassName(
               "flex flex-col items-center space-y-2 ",
               router?.pathname === "/community"
-                ? "text-lime-700"
+                ? "text-[#8a7d72]"
                 : "hover:text-gray-500 transition-colors",
             )}
           >
@@ -68,7 +68,7 @@ export default function BottomNavBar({ hasTabBar }: BottomNavBarProps) {
             className={setClassName(
               "flex flex-col items-center space-y-2 ",
               router?.pathname === "/chats"
-                ? "text-lime-700"
+                ? "text-[#8a7d72]"
                 : "hover:text-gray-500 transition-colors",
             )}
           >
@@ -94,7 +94,7 @@ export default function BottomNavBar({ hasTabBar }: BottomNavBarProps) {
             className={setClassName(
               "flex flex-col items-center space-y-2 ",
               router?.pathname === "/streams"
-                ? "text-lime-700"
+                ? "text-[#8a7d72]"
                 : "hover:text-gray-500 transition-colors",
             )}
           >
@@ -120,7 +120,7 @@ export default function BottomNavBar({ hasTabBar }: BottomNavBarProps) {
             className={setClassName(
               "flex flex-col items-center space-y-2 ",
               router?.pathname === "/profile"
-                ? "text-lime-700"
+                ? "text-[#8a7d72]"
                 : "hover:text-gray-500 transition-colors",
             )}
           >
