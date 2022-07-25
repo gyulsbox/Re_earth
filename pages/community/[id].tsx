@@ -105,7 +105,7 @@ const CommunityPostDetail: NextPage<CommunityPostResponse> = ({ post }) => {
             </p>
             <Link href={`/users/profiles/${post?.user.id}`}>
               <a className="text-xs font-medium text-gray-500">
-                View profile &rarr;
+                프로필 보기 &rarr;
               </a>
             </Link>
           </div>
@@ -199,10 +199,10 @@ const CommunityPostDetail: NextPage<CommunityPostResponse> = ({ post }) => {
           <TextArea
             register={register("comment", { required: true, minLength: 5 })}
             name="description"
-            placeholder="Answer this question!"
+            placeholder="내용을 적어주세요"
           />
           <button className="mt-2 w-full bg-lime-500 hover:bg-lime-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-lime-500 focus:outline-none ">
-            {commentLoading ? "Loading" : "Reply"}
+            {commentLoading ? "로딩중..." : "작성"}
           </button>
         </form>
       </div>

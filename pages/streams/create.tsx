@@ -40,14 +40,14 @@ const Create: NextPage = () => {
         <Input
           register={register("title", { required: true })}
           required
-          label="Title"
+          label="제목"
           name="title"
           type="text"
         />
         <Input
           register={register("price", { required: true, valueAsNumber: true })}
           required
-          label="Price"
+          label="가격"
           placeholder="0.00"
           name="price"
           type="text"
@@ -56,9 +56,9 @@ const Create: NextPage = () => {
         <TextArea
           register={register("description", { required: true, minLength: 5 })}
           name="description"
-          label="Description"
+          label="설명"
         />
-        <Button text={loading ? "loading" : "Go live"} />
+        <Button text={loading ? "로딩중..." : "스트리밍"} />
       </form>
     </Layout>
   );

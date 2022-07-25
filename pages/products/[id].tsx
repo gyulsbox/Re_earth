@@ -69,11 +69,6 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
       router.push(`/chats/${chatData.chat.id}`);
     }
   }, [user, chatData, router]);
-  // if (router.isFallback) {
-  //   return <Layout title='Loading for you'>
-  //     <span>I Love you</span>
-  //   </Layout>
-  // }
   return (
     <Layout seoTitle="Product Detail" title="상품상세" canGoBack>
       <div className="px-4  py-4">
@@ -99,7 +94,7 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
               </p>
               <Link href={`/users/profiles/${product?.user?.id}`}>
                 <a className="text-xs font-medium text-gray-500">
-                  View profile &rarr;
+                  프로필 보기 &rarr;
                 </a>
               </Link>
             </div>
@@ -114,7 +109,7 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
             <p className=" my-6 text-gray-700">{product?.description}</p>
             <div className="flex items-center justify-between space-x-2">
               <form className="w-full" onSubmit={handleSubmit(onValid)}>
-                <Button large text="Talk to seller" />
+                <Button large text="채팅하기" />
               </form>
               <button
                 onClick={onWishClick}
@@ -160,7 +155,7 @@ const ItemDetail: NextPage<ItemDetailResponse> = ({
           </div>
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Similar items</h2>
+          <h2 className="text-2xl font-bold text-gray-900">비슷한 상품</h2>
           <div className=" mt-6 grid grid-cols-2 gap-4">
             {relatedProducts.map((product) => (
               <div key={product.id}>

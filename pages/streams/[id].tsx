@@ -71,7 +71,7 @@ const Streams: NextPage = () => {
     sendMessage(form);
   };
   return (
-    <Layout canGoBack seoTitle='Streams Detail' title={data?.stream.title}>
+    <Layout canGoBack seoTitle="Streams Detail" title={data?.stream.title}>
       <div className="py-10 px-4  space-y-4">
         {data?.stream.cloudflareId ? (
           <div className="w-full rounded-md shadow-sm bg-slate-300 aspect-video">
@@ -93,8 +93,8 @@ const Streams: NextPage = () => {
             ${data?.stream?.price}
           </span>
           <p className=" my-6 text-gray-700">{data?.stream?.description}</p>
-          <div className="bg-orange-300 p-5 rounded-md overflow-scroll flex flex-col space-y-3">
-            <span>Stream Keys (only shown to Stream Owner)</span>
+          <div className="bg-gray-300 p-5 rounded-md overflow-scroll flex flex-col space-y-3">
+            <span>고유키 (게시글 주인만 확인 가능합니다.)</span>
             <span className="text-white">
               <span className="font-medium text-gray-800">URL:</span>
               {data?.stream.cloudflareUrl}
@@ -106,17 +106,18 @@ const Streams: NextPage = () => {
           </div>
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-gray-900">Live Chat</h2>
-          <div className="py-10 pb-16 h-[50vh] overflow-y-scroll px-4 space-y-4">
+          <h2 className="text-2xl font-bold text-gray-900">실시간 채팅</h2>
+          <div className="py-10 pb-16 h-[35vh] overflow-y-scroll px-4 space-y-4">
             {data?.stream.messages.map((message) => (
               <Messages
                 key={message.id}
                 message={message.message}
                 reversed={message.user.id === user?.id}
+                avatarUrl={message.user.avatar}
               />
             ))}
           </div>
-          <div className="fixed py-2 bg-white  bottom-0 inset-x-0">
+          <div className="fixed py-2 px-4 bg-white bottom-0 inset-x-0">
             <form
               onSubmit={handleSubmit(onValid)}
               className="flex relative max-w-md items-center  w-full mx-auto"
@@ -124,10 +125,10 @@ const Streams: NextPage = () => {
               <input
                 {...register("message", { required: true })}
                 type="text"
-                className="shadow-sm rounded-full w-full border-gray-300 focus:ring-orange-500 focus:outline-none pr-12 focus:border-orange-500"
+                className="shadow-sm rounded-full w-full border-gray-300 focus:ring-lime-500 focus:outline-none pr-12 focus:border-lime-500"
               />
               <div className="absolute inset-y-0 flex py-1.5 pr-1.5 right-0">
-                <button className="flex focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 items-center bg-orange-500 rounded-full px-3 hover:bg-orange-600 text-sm text-white">
+                <button className="flex focus:ring-2 focus:ring-offset-2 focus:ring-lime-500 items-center bg-lime-500 rounded-full px-3 hover:bg-lime-600 text-sm text-white">
                   &rarr;
                 </button>
               </div>

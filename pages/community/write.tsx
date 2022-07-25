@@ -49,7 +49,7 @@ const Write: NextPage = () => {
           register={register("contents", { required: true, minLength: 5 })}
           placeholder="내용을 입력해주세요."
         />
-        <Button text={loading ? "Loading" : "Submit"} />
+        <Button text={loading ? "로딩중..." : "게시글 작성"} />
       </form>
     </Layout>
   );

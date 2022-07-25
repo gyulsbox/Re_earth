@@ -99,13 +99,13 @@ const Upload: NextPage = () => {
         </div>
         <Input
           register={register("name", { required: true })}
-          label="Name"
+          label="제목"
           name="name"
           type="text"
         />
         <Input
           register={register("price", { required: true })}
-          label="Price"
+          label="가격"
           placeholder="0.00"
           name="price"
           type="text"
@@ -114,9 +114,9 @@ const Upload: NextPage = () => {
         <TextArea
           register={register("description", { required: true })}
           name="description"
-          label="Description"
+          label="내용"
         />
-        <Button text={loading ? "Loading" : "Upload item"} />
+        <Button text={loading ? "로딩중..." : "상품 등록"} />
       </form>
     </Layout>
   );

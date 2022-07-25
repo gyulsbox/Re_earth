@@ -35,7 +35,7 @@ const Profile: NextPage = () => {
           <div className="flex flex-col">
             <span className="font-medium text-gray-900">{user?.name}</span>
             <Link href="/profile/edit">
-              <a className="text-sm text-gray-700">Edit profile &rarr;</a>
+              <a className="text-sm text-gray-700">프로필 수정 &rarr;</a>
             </Link>
           </div>
         </div>
