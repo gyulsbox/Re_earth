@@ -4,7 +4,7 @@ interface BackButtonProps {
   canGoBack: boolean;
 }
 
-export default function BackButton(canGoBack: BackButtonProps) {
+export default function BackButton({ canGoBack }: BackButtonProps) {
   const router = useRouter();
   const onClick = () => {
     router?.back();

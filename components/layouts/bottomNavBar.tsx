@@ -3,10 +3,10 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 interface BottomNavBarProps {
-  hasTabbar: boolean;
+  hasTabBar: boolean;
 }
 
-export default function BottomNavBar(hasTabBar: BottomNavBarProps) {
+export default function BottomNavBar({ hasTabBar }: BottomNavBarProps) {
   const router = useRouter();
   if (hasTabBar) {
     return (

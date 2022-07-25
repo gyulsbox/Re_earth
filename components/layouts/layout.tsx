@@ -16,8 +16,8 @@ interface LayoutProps {
 
 export default function Layout({
   title,
-  canGoBack,
-  hasTabBar,
+  canGoBack = false,
+  hasTabBar = false,
   children,
   seoTitle,
 }: LayoutProps) {
@@ -28,7 +28,7 @@ export default function Layout({
         <title>{seoTitle} | Re:earth </title>
       </Head>
       <div className="bg-white w-full h-12 max-w-md justify-center text-lg px-10 font-medium fixed text-gray-800 border-b top-0 flex items-center z-20">
-        <BackButton canGoBack />
+        <BackButton canGoBack={canGoBack} />
         {title ? (
           <span className={setClassName(canGoBack ? "mx-auto" : "", "")}>
             {title}
@@ -38,7 +38,7 @@ export default function Layout({
       <div className={setClassName("pt-12", hasTabBar ? "pb-24" : "")}>
         {children}
       </div>
-      <BottomNavBar hasTabbar />
+      <BottomNavBar hasTabBar={hasTabBar} />
     </div>
   );
 }
