@@ -14,13 +14,10 @@ async function handler(
   const checkUser = await client.user.findFirst({
     where: {
       username,
-      AND: {
-        password,
-      },
     },
   });
 
-  if (checkUser) {
+  if (checkUser && checkUser.password === password) {
     req.session.user = {
       id: checkUser.id,
     };
