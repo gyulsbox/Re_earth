@@ -11,11 +11,7 @@ async function handler(
 
   if (!username || !password) return res.status(400).json({ ok: false });
 
-  const checkUser = await client.user.findUnique({
-    where: {
-      username,
-    },
-  });
+  const checkUser = await client.user.findUnique({ where: { username } });
 
   if (!checkUser) return res.status(404).end();
 
