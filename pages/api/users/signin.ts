@@ -2,6 +2,7 @@ import client from "@libs/server/client";
 import withHandler, { ResponseType } from "@libs/server/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
 import { withApiSession } from "@libs/server/withSession";
+import { use } from "chai";
 
 async function handler(
   req: NextApiRequest,
@@ -13,7 +14,7 @@ async function handler(
 
   const checkUser = await client.user.findFirst({
     where: {
-      username,
+      username: JSON.parse(JSON.stringify(username)),
     },
   });
 
