@@ -13,8 +13,10 @@ async function handler(
 
   const checkUser = await client.user.findFirst({
     where: {
-      username: username,
-      password: password,
+      username,
+      AND: {
+        password,
+      },
     },
   });
 
