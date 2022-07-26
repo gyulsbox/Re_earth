@@ -7,10 +7,14 @@ import useMutation from "@libs/client/useMutation";
 import { setClassName } from "@libs/client/utils";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { sign } from "crypto";
 
 interface EnterForm {
   email?: string;
+  username?: string;
+  password?: string;
   phone?: string;
+  name?: string;
 }
 
 interface TokenForm {
@@ -23,24 +27,40 @@ interface EnterMutaionResult {
 
 const Enter: NextPage = () => {
   const [enter, { loading, data, error }] =
+    useMutation<EnterMutaionResult>("/api/users/signin");
+  const [enterEmail, { loading: emailLoading, data: emailData }] =
     useMutation<EnterMutaionResult>("/api/users/enter");
   const [confirmToken, { loading: tokenLoading, data: tokenData }] =
     useMutation<EnterMutaionResult>("/api/users/confirm");
+  const [signUp, { loading: signUpLoading, data: signUpData }] =
+    useMutation<EnterMutaionResult>("/api/users/signup");
   const { register, reset, handleSubmit } = useForm<EnterForm>();
   const { register: tokenRegister, handleSubmit: tokenGandleSubmit } =
     useForm<TokenForm>();
-  const [method, setMethod] = useState<"email" | "phone">("email");
+  const [method, setMethod] = useState<"email" | "normal" | "signup">("email");
   const onEmailClick = () => {
     reset();
     setMethod("email");
   };
-  const onPhoneClick = () => {
+  const onNormalClick = () => {
     reset();
-    setMethod("phone");
+    setMethod("normal");
+  };
+  const onSignupClick = () => {
+    reset();
+    setMethod("signup");
   };
   const onValid = (validForm: EnterForm) => {
     if (loading) return;
     enter(validForm);
+  };
+  const onEmailValid = (validForm: EnterForm) => {
+    if (emailLoading) return;
+    enterEmail(validForm);
+  };
+  const onSignUpValid = (validForm: EnterForm) => {
+    if (signUpLoading) return;
+    signUp(validForm);
   };
   const onTokenValid = (validForm: TokenForm) => {
     if (tokenLoading) return;
@@ -48,10 +68,11 @@ const Enter: NextPage = () => {
   };
   const router = useRouter();
   useEffect(() => {
-    if (tokenData?.ok) {
+    const response = data?.ok || tokenData?.ok || signUpData?.ok;
+    if (response) {
       router.push("/");
     }
-  }, [tokenData, router]);
+  }, [tokenData, signUpData, data, router]);
   const logo = "/static/logos.png";
   return (
     <div className="mt-8 px-4">
@@ -62,7 +83,7 @@ const Enter: NextPage = () => {
         <img src={logo} alt="reearthlogo" />
       </div>
       <div className="mt-12">
-        {data?.ok ? (
+        {emailData?.ok ? (
           <form
             onSubmit={tokenGandleSubmit(onTokenValid)}
             className="flex flex-col mt-8 space-y-4"
@@ -82,6 +103,17 @@ const Enter: NextPage = () => {
                 <button
                   className={setClassName(
                     "pb-4 font-medium text-sm border-b-2",
+                    method === "normal"
+                      ? " border-[#8a7d72] text-[#8a7d72]"
+                      : "border-transparent hover:text-gray-400 text-gray-500",
+                  )}
+                  onClick={onNormalClick}
+                >
+                  일반
+                </button>
+                <button
+                  className={setClassName(
+                    "pb-4 font-medium text-sm border-b-2",
                     method === "email"
                       ? " border-[#8a7d72] text-[#8a7d72]"
                       : "border-transparent hover:text-gray-400 text-gray-500",
@@ -90,21 +122,12 @@ const Enter: NextPage = () => {
                 >
                   이메일
                 </button>
-                <button
-                  className={setClassName(
-                    "pb-4 font-medium text-sm border-b-2",
-                    method === "phone"
-                      ? " border-[#8a7d72] text-[#8a7d72]"
-                      : "border-transparent hover:text-gray-400 text-gray-500",
-                  )}
-                  onClick={onPhoneClick}
-                >
-                  전화번호
-                </button>
               </div>
             </div>
             <form
-              onSubmit={handleSubmit(onValid)}
+              onSubmit={handleSubmit(
+                method === "email" ? onEmailValid : onValid,
+              )}
               className="flex flex-col mt-8 space-y-4"
             >
               {method === "email" ? (
@@ -115,28 +138,65 @@ const Enter: NextPage = () => {
                   type="email"
                 />
               ) : null}
-              {method === "phone" ? (
-                <Input
-                  register={register("phone", { required: true })}
-                  name="phone"
-                  label="전화번호"
-                  type="number"
-                  kind="phone"
-                />
+              {method === "normal" ? (
+                <>
+                  <Input
+                    register={register("username", { required: true })}
+                    name="username"
+                    label="아이디"
+                    type="id"
+                  />
+                  <Input
+                    register={register("password", { required: true })}
+                    name="password"
+                    label="비밀번호"
+                    type="password"
+                  />
+                </>
               ) : null}
               {method === "email" ? (
                 <Button
-                  text={loading ? "로딩중..." : "단발성 로그인 토큰 요청"}
+                  text={emailLoading ? "로딩중..." : "단발성 로그인 토큰 요청"}
                 />
               ) : null}
-              {method === "phone" ? (
-                <Button
-                  text={loading ? "로딩중..." : "단발성 로그인 토큰 요청"}
-                />
+              {method === "normal" ? (
+                <Button text={loading ? "로딩중..." : "로그인"} />
               ) : null}
             </form>
           </>
         )}
+        {method === "signup" ? (
+          <form
+            onSubmit={handleSubmit(onSignUpValid)}
+            className="flex flex-col mt-8 space-y-4"
+          >
+            <Input
+              register={register("username", { required: true })}
+              name="username"
+              label="아이디"
+              type="text"
+            />
+            <Input
+              register={register("password", { required: true })}
+              name="password"
+              label="비밀번호"
+              type="password"
+            />
+            <Input
+              register={register("name", { required: true })}
+              name="name"
+              label="닉네임"
+              type="text"
+            />
+            <Input
+              register={register("email", { required: true })}
+              name="email"
+              label="이메일"
+              type="email"
+            />
+            <Button text={loading ? "로딩중..." : "회원가입"} />
+          </form>
+        ) : null}
         <div className="mt-8">
           <div className="relative">
             <div className="absolute w-full border-t border-gray-300" />
@@ -146,7 +206,13 @@ const Enter: NextPage = () => {
               </span>
             </div>
           </div>
-          <div className="grid grid-cols-2 mt-2 gap-3">
+          <div className="grid grid-cols-3 mt-2 gap-3">
+            <button
+              onClick={onSignupClick}
+              className="flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
+            >
+              회원가입
+            </button>
             <button className="flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
               <svg
                 className="w-5 h-5"
