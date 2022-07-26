@@ -2,19 +2,24 @@ import client from "@libs/server/client";
 import withHandler, { ResponseType } from "@libs/server/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
 import { withApiSession } from "@libs/server/withSession";
-import { use } from "chai";
+
+interface LoginForm {
+  username: string;
+  password: string;
+}
 
 async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>,
 ) {
-  const { username, password } = req.body;
+  const { username, password }: LoginForm = req.body;
 
   if (!username || !password) return res.status(400).json({ ok: false });
 
   const checkUser = await client.user.findFirst({
     where: {
-      username: JSON.parse(JSON.stringify(username)),
+      username,
+      password,
     },
   });
 
