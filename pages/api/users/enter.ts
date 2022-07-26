@@ -16,32 +16,25 @@ async function handler(
 
   if (!user) return res.status(400).json({ ok: false });
 
-  const token = await client.token.create({
-    data: {
-      payload,
-      user: {
-        connectOrCreate: {
-          where: {
-            ...user,
-          },
-          create: {
-            name: "Anonimous",
-            ...user,
+  if (email) {
+    const checkEmail = await client.user.findUnique({
+      where: {
+        email,
+      },
+    });
+    if (checkEmail) {
+      const token = await client.token.create({
+        data: {
+          payload,
+          user: {
+            connect: {
+              email,
+            },
           },
         },
-      },
-    },
-  });
-  console.log(token);
-
-  if (phone) {
-    const message = await twilioClient.messages.create({
-      messagingServiceSid: process.env.TWILIO_MSID,
-      to: process.env.MY_PHONE!,
-      body: `Your login token is ${payload}`,
-    });
-    console.log(message);
-  } else if (email) {
+      });
+      console.log(token);
+    }
     const mailOptions = {
       from: {
         name: "Re:earth",
@@ -79,11 +72,19 @@ async function handler(
       });
     });
     smtpTransport.close();
+    return res.json({
+      ok: true,
+      payload,
+    });
   }
-  return res.json({
-    ok: true,
-    payload,
-  });
+  // if (phone) {
+  //   const message = await twilioClient.messages.create({
+  //     messagingServiceSid: process.env.TWILIO_MSID,
+  //     to: process.env.MY_PHONE!,
+  //     body: `Your login token is ${payload}`,
+  //   });
+  //   console.log(message);
+  // }
 }
 
 export default withHandler({ method: ["POST"], handler, isPrivate: false });
