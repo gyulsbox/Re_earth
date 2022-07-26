@@ -12,9 +12,9 @@ async function handler(
   if (!username || !password) return res.status(400).json({ ok: false });
 
   const checkUser = await client.user.findFirst({
-    select: {
-      username,
-      password,
+    where: {
+      username: username,
+      password: password,
     },
   });
 
