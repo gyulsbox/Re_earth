@@ -68,9 +68,12 @@ const Enter: NextPage = () => {
   };
   const router = useRouter();
   useEffect(() => {
-    const response = data?.ok || tokenData?.ok || signUpData?.ok;
+    const response = data?.ok || tokenData?.ok;
     if (response) {
       router.push("/");
+    }
+    if (signUpData?.ok) {
+      setMethod("normal");
     }
   }, [tokenData, signUpData, data, router]);
   const logo = "/static/logos.png";
