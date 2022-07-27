@@ -33,6 +33,9 @@
 
 # Description                                                                                
 > 22.06.20 ~ ing
+
+#### 중고거래 메인의 커뮤니티 웹 페이지
+
   ```
 - Next.js & TypeScript를 활용하여 개발 진행
 - Next를 통한 API 구현
