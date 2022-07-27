@@ -25,7 +25,7 @@ async function handler(
   if (req.method === "POST") {
     const {
       session: { user },
-      body: { email, phone, name, avatarId },
+      body: { email, phone, name, password, avatarId },
     } = req;
     const currentUser = await client.user.findUnique({
       where: {
@@ -88,15 +88,30 @@ async function handler(
         });
       }
     }
-    if (name) {
-      await client.user.update({
-        where: {
-          id: user?.id,
-        },
-        data: {
-          name,
-        },
-      });
+    if (name && name !== currentUser?.name) {
+      const alreadyExists = Boolean(
+        await client.user.findUnique({
+          where: {
+            name,
+          },
+          select: { id: true },
+        }),
+      );
+      if (alreadyExists) {
+        return res.json({
+          ok: false,
+          error: "Nick name already taken.",
+        });
+      } else {
+        await client.user.update({
+          where: {
+            id: user?.id,
+          },
+          data: {
+            name,
+          },
+        });
+      }
     }
     if (avatarId) {
       await client.user.update({
@@ -105,6 +120,16 @@ async function handler(
         },
         data: {
           avatar: avatarId,
+        },
+      });
+    }
+    if (password) {
+      await client.user.update({
+        where: {
+          id: user?.id,
+        },
+        data: {
+          password,
         },
       });
     }
