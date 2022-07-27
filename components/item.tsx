@@ -35,7 +35,7 @@ export default function Item({
             <div className="w-20 h-20 bg-gray-400 rounded-md" />
           )}
         </div>
-        <div className="pt-1 pl-1.5 flex flex-col space-y-1 w-7/12">
+        <div className="pt-1 pl-1.5 flex flex-col space-y-1 w-7/12 md:w-8/12">
           <h3 className="text-sm font-medium text-gray-900 truncate">
             {title}
           </h3>
