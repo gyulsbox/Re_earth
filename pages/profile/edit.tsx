@@ -13,6 +13,7 @@ interface EditProfileForm {
   email?: string;
   phone?: string;
   name?: string;
+  password?: string;
   formEroors?: string;
 }
 
@@ -35,6 +36,7 @@ const EditProfile: NextPage = () => {
   } = useForm();
   useEffect(() => {
     if (user?.name) setValue("name", user.name);
+    if (user?.password) setValue("password", user.password);
     if (user?.email) setValue("email", user.email);
     if (user?.phone) setValue("phone", user.phone);
     if (user?.avatar)
@@ -44,9 +46,9 @@ const EditProfile: NextPage = () => {
   }, [user, setValue]);
   const [editProfile, { data, loading }] =
     useMutation<EditProfileResponse>(`/api/users/me`);
-  const onValid = async ({ email, phone, name, avatar }: EditProfileForm) => {
+  const onValid = async ({ email, phone, name, avatar, password }: EditProfileForm) => {
     if (loading) return;
-    if (email === "" && phone === "" && name === "") {
+    if (email === "" && phone === "" && name === "" && password === "") {
       setError("formErrors", {
         message: "You must enter either an email or a mobile number.",
       });
@@ -67,6 +69,7 @@ const EditProfile: NextPage = () => {
         email,
         phone,
         name,
+        password,
         avatarId: id,
       });
     } else {
@@ -74,6 +77,7 @@ const EditProfile: NextPage = () => {
         email,
         phone,
         name,
+        password,
       });
     }
   };
@@ -120,19 +124,25 @@ const EditProfile: NextPage = () => {
         </div>
         <Input
           register={register("name")}
-          label="Name"
+          label="닉네임"
           name="name"
           type="text"
         />
         <Input
+          register={register("password")}
+          label="비밀번호"
+          name="password"
+          type="password"
+        />
+        <Input
           register={register("email")}
-          label="Email address"
+          label="이메일"
           name="email"
           type="email"
         />
         <Input
           register={register("phone")}
-          label="Phone number"
+          label="전화번호"
           name="phone"
           type="number"
           kind="phone"
@@ -142,7 +152,7 @@ const EditProfile: NextPage = () => {
             {errors.formErrors.message}
           </span>
         ) : null}
-        <Button text={loading ? "Loading" : "Update profile"} />
+        <Button text={loading ? "로딩중..." : "프로필 수정"} />
       </form>
     </Layout>
   );
