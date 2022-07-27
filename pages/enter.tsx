@@ -36,7 +36,7 @@ const Enter: NextPage = () => {
   const { register, reset, handleSubmit } = useForm<EnterForm>();
   const { register: tokenRegister, handleSubmit: tokenGandleSubmit } =
     useForm<TokenForm>();
-  const [method, setMethod] = useState<"email" | "normal" | "signup">("normal");
+  const [method, setMethod] = useState<"normal" | "email" | "signup">("normal");
   const onEmailClick = () => {
     reset();
     setMethod("email");
