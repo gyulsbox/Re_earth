@@ -1,3 +1,5 @@
+export {};
+
 describe("엔터 페이지 E2E 테스트", () => {
   const randomNumber = Math.floor(1 + Math.random() * 1000) + "";
   function generalLogin() {
