@@ -7,6 +7,7 @@
   <img src='https://img.shields.io/badge/React-v18.2.0-blue?style=flat-square&logo=React'/>
   <img src="https://img.shields.io/badge/TypeScript-v4.7.4-3178C6?style=flat-square&logo=TypeScript&logoColor=#3178C6" alt="TypeScript badge" />
   <img src="https://img.shields.io/badge/TailwindCSS-v3.1.3-teal?style=flat-square&logo=Tailwind CSS&logoColor=#CA4245" alt="react-router badge" />
+  <br />
   <img src="https://img.shields.io/badge/Prisma-v3.15.2-white?style=flat-square&logo=Prisma" />
   <img src="https://img.shields.io/badge/Cypress-v10.3.0-DB7093?style=flat-square&logo=Cypress&logoColor=#DB7093" alt="styled-components badge" />
   <img src="https://img.shields.io/badge/Jest-v28.1.2-DB7093?style=flat-square&logo=Jest&logoColor=#0055FF" alt="Framer badge" />
