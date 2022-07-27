@@ -36,7 +36,7 @@ const Enter: NextPage = () => {
   const { register, reset, handleSubmit } = useForm<EnterForm>();
   const { register: tokenRegister, handleSubmit: tokenGandleSubmit } =
     useForm<TokenForm>();
-  const [method, setMethod] = useState<"email" | "normal" | "signup">("email");
+  const [method, setMethod] = useState<"email" | "normal" | "signup">("normal");
   const onEmailClick = () => {
     reset();
     setMethod("email");
@@ -170,7 +170,7 @@ const Enter: NextPage = () => {
         {method === "signup" ? (
           <form
             onSubmit={handleSubmit(onSignUpValid)}
-            className="flex flex-col mt-8 space-y-4"
+            className="flex flex-col space-y-4"
           >
             <Input
               register={register("username", { required: true })}
@@ -193,7 +193,7 @@ const Enter: NextPage = () => {
             <Input
               register={register("email", { required: true })}
               name="email"
-              label="이메일"
+              label="이메일 주소"
               type="email"
             />
             <Button text={loading ? "로딩중..." : "회원가입"} />
