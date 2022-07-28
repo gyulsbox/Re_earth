@@ -52,12 +52,13 @@ const Enter: NextPage = () => {
     reset,
     handleSubmit,
     getValues,
+    watch,
     formState: { errors },
   } = useForm<EnterForm>();
   const {
     register: tokenRegister,
     handleSubmit: tokenHandleSubmit,
-    getValues: getTokens,
+    watch: watchToken,
     formState: { errors: tokenErrors },
   } = useForm<TokenForm>();
   const [method, setMethod] = useState<"normal" | "email" | "signup">("normal");
@@ -115,10 +116,10 @@ const Enter: NextPage = () => {
   ) {
     if (form && type) {
       let message;
-      let currentValue = getValues(type);
-      let currentToken = getTokens("token");
+      let currentValue = watch(type);
+      let currentToken = watchToken("token");
       if (currentToken) {
-        if (form === "token" && getTokens("token") !== emailData?.payload) {
+        if (form === "token" && currentToken !== emailData?.payload) {
           message = "인증번호가 일치하지 않습니다.";
           return message ? (
             <span className="!mt-1 text-sm pl-2 text-red-600">{message}</span>
@@ -143,14 +144,17 @@ const Enter: NextPage = () => {
           message = "이미 존재하는 이메일입니다.";
         } else if (
           form === "signin" &&
+          currentValue.length > 1 &&
+          data &&
           currentValue !== data?.checkUser?.password
         ) {
           message = "아이디 또는 비밀번호가 일치하지 않습니다.";
         } else if (
           form === "token" &&
+          emailData &&
           currentValue !== emailData?.checkUser?.email
         ) {
-          message = "등록되지 않은 이메일 주소입니다.";
+          message = "등록되지 않은 이메일 주소입니다. 다시 입력하세요.";
         } else {
           message = "";
         }
@@ -172,21 +176,21 @@ const Enter: NextPage = () => {
       <Head>
         <title>Login | Re:earth </title>
       </Head>
-      <div className="flex w-full mx-auto -mb-10 scale-125">
+      <div className="flex w-full mx-auto -mb-10 scale-110">
         <img src={logo} alt="reearthlogo" />
       </div>
       <div className="mt-12">
         {emailData?.ok ? (
           <form
             onSubmit={tokenHandleSubmit(onTokenValid)}
-            className="flex flex-col mt-4 space-y-4"
+            className="flex flex-col mt-4 space-y-4 w-3/4 mx-auto"
           >
             <Input
               register={tokenRegister("token", {
                 required: "메일로 받으신 토큰을 입력해주세요.",
               })}
               name="token"
-              label="토큰"
+              placeholder="토큰"
               type="text"
             />
             {isValidate("token", "token")}
@@ -224,7 +228,7 @@ const Enter: NextPage = () => {
               onSubmit={handleSubmit(
                 method === "email" ? onEmailValid : onValid,
               )}
-              className="flex flex-col mt-4 space-y-4"
+              className="flex flex-col mt-4 space-y-4 w-3/4 mx-auto"
             >
               {method === "email" ? (
                 <>
@@ -233,7 +237,7 @@ const Enter: NextPage = () => {
                       required: "등록된 이메일을 입력해 주세요.",
                     })}
                     name="email"
-                    label="이메일 주소"
+                    placeholder="이메일 주소"
                     type="email"
                   />
                   {isValidate("token", "email")}
@@ -247,7 +251,7 @@ const Enter: NextPage = () => {
                       required: "아이디를 입력해주세요.",
                     })}
                     name="username"
-                    label="아이디"
+                    placeholder="아이디"
                     type="id"
                   />
                   {errorMessage("username")}
@@ -256,7 +260,7 @@ const Enter: NextPage = () => {
                       required: "비밀번호를 입력해주세요.",
                     })}
                     name="password"
-                    label="비밀번호"
+                    placeholder="비밀번호"
                     type="password"
                   />
                   {isValidate("signin", "password")}
@@ -277,7 +281,7 @@ const Enter: NextPage = () => {
         {method === "signup" ? (
           <form
             onSubmit={handleSubmit(onSignUpValid)}
-            className="flex flex-col space-y-4"
+            className="flex flex-col space-y-4 w-3/4 mx-auto"
           >
             <Input
               register={register("username", {
@@ -296,7 +300,7 @@ const Enter: NextPage = () => {
                 },
               })}
               name="username"
-              label="아이디"
+              placeholder="아이디"
               type="text"
             />
             {isValidate("signup", "username")}
@@ -318,7 +322,7 @@ const Enter: NextPage = () => {
                 },
               })}
               name="password"
-              label="비밀번호"
+              placeholder="비밀번호"
               type="password"
             />
             {errorMessage("password")}
@@ -335,7 +339,7 @@ const Enter: NextPage = () => {
                 },
               })}
               name="passwordConfirm"
-              label="비밀번호 확인"
+              placeholder="비밀번호 확인"
               type="password"
             />
             {errorMessage("passwordConfirm")}
@@ -356,7 +360,7 @@ const Enter: NextPage = () => {
                 },
               })}
               name="name"
-              label="닉네임"
+              placeholder="닉네임"
               type="text"
             />
             {isValidate("signup", "name")}
@@ -378,7 +382,7 @@ const Enter: NextPage = () => {
                 },
               })}
               name="email"
-              label="이메일 주소"
+              placeholder="이메일 주소"
               type="text"
             />
             {isValidate("signup", "email")}
@@ -395,7 +399,7 @@ const Enter: NextPage = () => {
               </span>
             </div>
           </div>
-          <div className="grid grid-cols-1 mt-2 mb-6 gap-3">
+          <div className="grid grid-cols-1 mt-2 mb-6 gap-3 w-3/4 mx-auto">
             <button
               onClick={onSignupClick}
               className="flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50"
