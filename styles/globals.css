@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+  font-family: "Gowun Dodum", sans-serif;
+}
+
 .blog-post-content h1 {
   @apply my-5 text-sky-800 text-lg;
 }
