@@ -27,7 +27,7 @@ export default function Layout({
       <Head>
         <title>{seoTitle} | Re:earth </title>
       </Head>
-      <div className="bg-white w-full h-12 max-w-md justify-center text-lg px-10 font-medium fixed text-gray-800 border-b top-0 flex items-center z-20">
+      <div className="bg-white w-full h-12 max-w-md justify-center text-lg px-10 font-medium fixed no-scrollbar text-gray-800 border-b top-0 flex items-center z-20">
         <BackButton canGoBack={canGoBack} />
         {title ? (
           <span className={setClassName(canGoBack ? "mx-auto" : "", "")}>
