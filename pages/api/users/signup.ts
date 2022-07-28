@@ -25,12 +25,11 @@ async function handler(
 
   const checkName = await client.user.findUnique({
     where: {
-      email,
+      name,
     },
   });
-
   if (checkUserName || checkEmail || checkName) {
-    return res.status(400).json({ ok: false });
+    return res.json({ ok: false, checkUserName, checkEmail, checkName });
   } else {
     const registe = await client.user.create({
       data: {
