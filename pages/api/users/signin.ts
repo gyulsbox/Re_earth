@@ -16,7 +16,7 @@ async function handler(
   if (!checkUser) return res.status(404).json({ ok: false, checkUser });
 
   if (checkUser && checkUser.password !== password) {
-    return res.json({ ok: false });
+    return res.json({ ok: false, checkUser });
   }
   if (checkUser && checkUser.password === password) {
     req.session.user = {
@@ -24,7 +24,7 @@ async function handler(
     };
     await req.session.save();
     console.log(checkUser);
-    return res.json({ ok: true });
+    return res.json({ ok: true, checkUser });
   }
 }
 
