@@ -22,6 +22,7 @@ async function handler(
         email,
       },
     });
+    if (!checkEmail) return res.status(400).json({ ok: false });
     if (checkEmail) {
       const token = await client.token.create({
         data: {
