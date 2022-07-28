@@ -17,6 +17,7 @@ interface EnterForm {
   phone?: string;
   name?: string;
   passwordConfirm?: string;
+  token?: string;
 }
 
 interface TokenForm {
@@ -25,6 +26,8 @@ interface TokenForm {
 
 interface EnterMutaionResult {
   ok: boolean;
+  checkUser?: User;
+  payload?: string;
 }
 
 interface SignUpMutationResult {
@@ -51,8 +54,12 @@ const Enter: NextPage = () => {
     getValues,
     formState: { errors },
   } = useForm<EnterForm>();
-  const { register: tokenRegister, handleSubmit: tokenGandleSubmit } =
-    useForm<TokenForm>();
+  const {
+    register: tokenRegister,
+    handleSubmit: tokenHandleSubmit,
+    getValues: getTokens,
+    formState: { errors: tokenErrors },
+  } = useForm<TokenForm>();
   const [method, setMethod] = useState<"normal" | "email" | "signup">("normal");
   const onEmailClick = () => {
     reset();
@@ -64,6 +71,7 @@ const Enter: NextPage = () => {
   };
   const onSignupClick = () => {
     reset();
+    emailData?.ok == false;
     setMethod("signup");
   };
   const onValid = (validForm: EnterForm) => {
@@ -101,19 +109,50 @@ const Enter: NextPage = () => {
   }, [signUpData]);
   const logo = "/static/logos.png";
   const errorForm = <span className="!mt-1 text-sm pl-2 text-red-600" />;
-  function isValidate(type?: "email" | "username" | "name") {
-    if (type) {
-      let currentValue = getValues(type);
+  function isValidate(
+    form: "token" | "signin" | "signup",
+    type?: "email" | "username" | "name" | "password" | "token",
+  ) {
+    if (form && type) {
       let message;
+      let currentValue = getValues(type);
+      let currentToken = getTokens("token");
+      if (currentToken) {
+        if (form === "token" && getTokens("token") !== emailData?.payload) {
+          message = "인증번호가 일치하지 않습니다.";
+          return message ? (
+            <span className="!mt-1 text-sm pl-2 text-red-600">{message}</span>
+          ) : null;
+        }
+      }
       if (currentValue) {
-        if (currentValue === signUpData?.checkUserName?.username) {
+        if (
+          form === "signup" &&
+          currentValue === signUpData?.checkUserName?.username
+        ) {
           message = "이미 존재하는 아이디입니다.";
-        } else if (currentValue === signUpData?.checkName?.name) {
+        } else if (
+          form === "signup" &&
+          currentValue === signUpData?.checkName?.name
+        ) {
           message = "이미 존재하는 닉네임입니다.";
-        } else if (currentValue === signUpData?.checkEmail?.email) {
+        } else if (
+          form === "signup" &&
+          currentValue === signUpData?.checkEmail?.email
+        ) {
           message = "이미 존재하는 이메일입니다.";
+        } else if (
+          form === "signin" &&
+          currentValue !== data?.checkUser?.password
+        ) {
+          message = "아이디 또는 비밀번호가 일치하지 않습니다.";
+        } else if (
+          form === "token" &&
+          currentValue !== emailData?.checkUser?.email
+        ) {
+          message = "등록되지 않은 이메일 주소입니다.";
         } else {
-          message = undefined;
+          message = "";
         }
         return message ? (
           <span className="!mt-1 text-sm pl-2 text-red-600">{message}</span>
@@ -124,6 +163,8 @@ const Enter: NextPage = () => {
   function errorMessage(name: string) {
     return errors ? (
       <ErrorMessage errors={errors} name={name} as={errorForm} />
+    ) : tokenErrors ? (
+      <ErrorMessage errors={tokenErrors} name={name} as={errorForm} />
     ) : null;
   }
   return (
@@ -137,15 +178,18 @@ const Enter: NextPage = () => {
       <div className="mt-12">
         {emailData?.ok ? (
           <form
-            onSubmit={tokenGandleSubmit(onTokenValid)}
+            onSubmit={tokenHandleSubmit(onTokenValid)}
             className="flex flex-col mt-8 space-y-4"
           >
             <Input
-              register={tokenRegister("token", { required: true })}
+              register={tokenRegister("token", {
+                required: "메일로 받으신 토큰을 입력해주세요.",
+              })}
               name="token"
               label="토큰"
               type="text"
             />
+            {isValidate("token", "token")}
             <Button text={tokenLoading ? "로딩중..." : "토큰 인증"} />
           </form>
         ) : (
@@ -183,27 +227,40 @@ const Enter: NextPage = () => {
               className="flex flex-col mt-8 space-y-4"
             >
               {method === "email" ? (
-                <Input
-                  register={register("email", { required: true })}
-                  name="email"
-                  label="이메일 주소"
-                  type="email"
-                />
+                <>
+                  <Input
+                    register={register("email", {
+                      required: "등록된 이메일을 입력해 주세요.",
+                    })}
+                    name="email"
+                    label="이메일 주소"
+                    type="email"
+                  />
+                  {isValidate("token", "email")}
+                  {errorMessage("email")}
+                </>
               ) : null}
               {method === "normal" ? (
                 <>
                   <Input
-                    register={register("username", { required: true })}
+                    register={register("username", {
+                      required: "아이디를 입력해주세요.",
+                    })}
                     name="username"
                     label="아이디"
                     type="id"
                   />
+                  {errorMessage("username")}
                   <Input
-                    register={register("password", { required: true })}
+                    register={register("password", {
+                      required: "비밀번호를 입력해주세요.",
+                    })}
                     name="password"
                     label="비밀번호"
                     type="password"
                   />
+                  {isValidate("signin", "password")}
+                  {errorMessage("password")}
                 </>
               ) : null}
               {method === "email" ? (
@@ -242,7 +299,7 @@ const Enter: NextPage = () => {
               label="아이디"
               type="text"
             />
-            {isValidate("username")}
+            {isValidate("signup", "username")}
             {errorMessage("username")}
             <Input
               register={register("password", {
@@ -302,7 +359,7 @@ const Enter: NextPage = () => {
               label="닉네임"
               type="text"
             />
-            {isValidate("name")}
+            {isValidate("signup", "name")}
             {errorMessage("name")}
             <Input
               register={register("email", {
@@ -324,7 +381,7 @@ const Enter: NextPage = () => {
               label="이메일 주소"
               type="text"
             />
-            {isValidate("email")}
+            {isValidate("signup", "email")}
             {errorMessage("email")}
             <Button text={loading ? "로딩중..." : "회원가입"} />
           </form>
