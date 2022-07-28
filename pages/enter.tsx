@@ -172,14 +172,14 @@ const Enter: NextPage = () => {
       <Head>
         <title>Login | Re:earth </title>
       </Head>
-      <div className="flex w-full mx-auto -mb-10 scale-110">
+      <div className="flex w-full mx-auto -mb-10 scale-125">
         <img src={logo} alt="reearthlogo" />
       </div>
       <div className="mt-12">
         {emailData?.ok ? (
           <form
             onSubmit={tokenHandleSubmit(onTokenValid)}
-            className="flex flex-col mt-8 space-y-4"
+            className="flex flex-col mt-4 space-y-4"
           >
             <Input
               register={tokenRegister("token", {
@@ -195,7 +195,7 @@ const Enter: NextPage = () => {
         ) : (
           <>
             <div className="flex flex-col items-center">
-              <div className="grid  border-b  w-full mt-8 grid-cols-2 ">
+              <div className="grid  border-b w-full mt-4 grid-cols-2 ">
                 <button
                   className={setClassName(
                     "pb-4 font-medium text-sm border-b-2",
@@ -224,7 +224,7 @@ const Enter: NextPage = () => {
               onSubmit={handleSubmit(
                 method === "email" ? onEmailValid : onValid,
               )}
-              className="flex flex-col mt-8 space-y-4"
+              className="flex flex-col mt-4 space-y-4"
             >
               {method === "email" ? (
                 <>
