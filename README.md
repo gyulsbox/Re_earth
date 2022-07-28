@@ -112,7 +112,7 @@ $ npm run cypress
 ```
 └─── src
     │
-    │  middleware.tsx
+    ├─── middleware.tsx
     │  
     ├─── Pages
     │   ├─── _app.tsx
@@ -228,7 +228,7 @@ $ npm run cypress
     │  └─── seed.ts
     │
     ├─── Styles
-    │  └───   globals.css
+    │  └─── globals.css
     │
     ├─── Posts
     │  ├─── 01-first-post.md
@@ -237,6 +237,8 @@ $ npm run cypress
     │  └─── 04-weight-down.md
     │
     ├─── Cypress
+    │       └─── e2e
+    │           └─── enter-page.e2e.ts
     │
     └─── Tests
         └─── unit
