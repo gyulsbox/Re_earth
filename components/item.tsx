@@ -44,8 +44,8 @@ export default function Item({
             {price.toLocaleString("ko-KR")}원
           </span>
         </div>
-        <div className="flex space-x-2 items-end justify-end">
-          <div className="flex space-x-0.5 items-center text-sm text-gray-600">
+        <div className="flex space-x-2 items-end justify-end w-2/12 md:w-1/12">
+          <div className="flex space-x-0.5 items-center text-sm text-gray-600 w-1/2">
             <svg
               className="w-4 h-4"
               fill="none"
@@ -62,7 +62,7 @@ export default function Item({
             </svg>
             <span>{hearts}</span>
           </div>
-          <div className="flex space-x-0.5 items-center text-sm text-gray-600">
+          <div className="flex space-x-0.5 items-center text-sm text-gray-600 w-1/2">
             <svg
               className="w-4 h-4"
               fill="none"
