@@ -13,8 +13,11 @@ async function handler(
 
   const checkUser = await client.user.findUnique({ where: { username } });
 
-  if (!checkUser) return res.status(404).end();
+  if (!checkUser) return res.status(404).json({ ok: false, checkUser });
 
+  if (checkUser && checkUser.password !== password) {
+    return res.json({ ok: false });
+  }
   if (checkUser && checkUser.password === password) {
     req.session.user = {
       id: checkUser.id,
