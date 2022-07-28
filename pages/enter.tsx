@@ -7,6 +7,8 @@ import useMutation from "@libs/client/useMutation";
 import { setClassName } from "@libs/client/utils";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { User } from "@prisma/client";
+import { ErrorMessage } from "@hookform/error-message";
 
 interface EnterForm {
   email?: string;
@@ -14,6 +16,7 @@ interface EnterForm {
   password?: string;
   phone?: string;
   name?: string;
+  passwordConfirm?: string;
 }
 
 interface TokenForm {
@@ -24,16 +27,30 @@ interface EnterMutaionResult {
   ok: boolean;
 }
 
+interface SignUpMutationResult {
+  ok: boolean;
+  registe: User;
+  checkUserName?: User;
+  checkEmail?: User;
+  checkName?: User;
+}
+
 const Enter: NextPage = () => {
-  const [enter, { loading, data, error }] =
+  const [enter, { loading, data }] =
     useMutation<EnterMutaionResult>("/api/users/signin");
   const [enterEmail, { loading: emailLoading, data: emailData }] =
     useMutation<EnterMutaionResult>("/api/users/enter");
   const [confirmToken, { loading: tokenLoading, data: tokenData }] =
     useMutation<EnterMutaionResult>("/api/users/confirm");
   const [signUp, { loading: signUpLoading, data: signUpData }] =
-    useMutation<EnterMutaionResult>("/api/users/signup");
-  const { register, reset, handleSubmit } = useForm<EnterForm>();
+    useMutation<SignUpMutationResult>("/api/users/signup");
+  const {
+    register,
+    reset,
+    handleSubmit,
+    getValues,
+    formState: { errors },
+  } = useForm<EnterForm>();
   const { register: tokenRegister, handleSubmit: tokenGandleSubmit } =
     useForm<TokenForm>();
   const [method, setMethod] = useState<"normal" | "email" | "signup">("normal");
@@ -67,15 +84,48 @@ const Enter: NextPage = () => {
   };
   const router = useRouter();
   useEffect(() => {
-    const response = data?.ok || tokenData?.ok;
-    if (response) {
+    if (data?.ok) {
       router.push("/");
     }
+  }, [data, router]);
+  useEffect(() => {
+    if (tokenData?.ok) {
+      router.push("/");
+    }
+  }, [tokenData, router]);
+  useEffect(() => {
     if (signUpData?.ok) {
+      alert(`${signUpData.registe.name}님 환영합니다.`);
       setMethod("normal");
     }
-  }, [tokenData, signUpData, data, router]);
+  }, [signUpData]);
   const logo = "/static/logos.png";
+  const errorForm = <span className="!mt-1 text-sm pl-2 text-red-600" />;
+  function isValidate(type?: "email" | "username" | "name") {
+    if (type) {
+      let currentValue = getValues(type);
+      let message;
+      if (currentValue) {
+        if (currentValue === signUpData?.checkUserName?.username) {
+          message = "이미 존재하는 아이디입니다.";
+        } else if (currentValue === signUpData?.checkName?.name) {
+          message = "이미 존재하는 닉네임입니다.";
+        } else if (currentValue === signUpData?.checkEmail?.email) {
+          message = "이미 존재하는 이메일입니다.";
+        } else {
+          message = undefined;
+        }
+        return message ? (
+          <span className="!mt-1 text-sm pl-2 text-red-600">{message}</span>
+        ) : null;
+      }
+    }
+  }
+  function errorMessage(name: string) {
+    return errors ? (
+      <ErrorMessage errors={errors} name={name} as={errorForm} />
+    ) : null;
+  }
   return (
     <div className="mt-8 px-4">
       <Head>
@@ -173,29 +223,109 @@ const Enter: NextPage = () => {
             className="flex flex-col space-y-4"
           >
             <Input
-              register={register("username", { required: true })}
+              register={register("username", {
+                required: "아이디를 입력해주세요.",
+                minLength: {
+                  value: 5,
+                  message: "최소 5자 이상의 아이디를 입력해주세요.",
+                },
+                maxLength: {
+                  value: 16,
+                  message: "16자 이하의 아이디만 사용가능합니다.",
+                },
+                pattern: {
+                  value: /^[a-z]+[a-z0-9]{4,16}$/g,
+                  message: "영문 및 숫자를 혼용한 아이디를 입력해주세요.",
+                },
+              })}
               name="username"
               label="아이디"
               type="text"
             />
+            {isValidate("username")}
+            {errorMessage("username")}
             <Input
-              register={register("password", { required: true })}
+              register={register("password", {
+                required: "비밀번호를 입력해주세요.",
+                minLength: {
+                  value: 8,
+                  message: "최소 8자 이상의 비밀번호를 입력해주세요.",
+                },
+                maxLength: {
+                  value: 16,
+                  message: "16자 이하의 비밀번호만 사용가능합니다.",
+                },
+                pattern: {
+                  value: /^(?=.*\d)(?=.*[a-zA-ZS]).{8,}/,
+                  message: "영문, 숫자를 혼용하여 입력해주세요.",
+                },
+              })}
               name="password"
               label="비밀번호"
               type="password"
             />
+            {errorMessage("password")}
             <Input
-              register={register("name", { required: true })}
+              register={register("passwordConfirm", {
+                required: "동일한 비밀번호를 입력해주세요.",
+                validate: {
+                  confirmPassword: (value) => {
+                    const { password } = getValues();
+                    return (
+                      password === value || "비밀번호가 일치하지 않습니다."
+                    );
+                  },
+                },
+              })}
+              name="passwordConfirm"
+              label="비밀번호 확인"
+              type="password"
+            />
+            {errorMessage("passwordConfirm")}
+            <Input
+              register={register("name", {
+                required: "닉네임을 입력해주세요.",
+                minLength: {
+                  value: 2,
+                  message: "최소 2자 이상의 닉네임을 입력해주세요.",
+                },
+                maxLength: {
+                  value: 14,
+                  message: "14자 이하의 닉네임만 사용가능합니다.",
+                },
+                pattern: {
+                  value: /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/,
+                  message: "한글, 영어, 숫자만 입력해주세요.",
+                },
+              })}
               name="name"
               label="닉네임"
               type="text"
             />
+            {isValidate("name")}
+            {errorMessage("name")}
             <Input
-              register={register("email", { required: true })}
+              register={register("email", {
+                required: "이메일을 입력해주세요.",
+                minLength: {
+                  value: 5,
+                  message: "최소 5자 이상의 이메일을 입력해주세요.",
+                },
+                maxLength: {
+                  value: 30,
+                  message: "30자 이하의 이메일만 사용가능합니다.",
+                },
+                pattern: {
+                  value: /^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
+                  message: "올바른 이메일 양식으로 입력해주세요.",
+                },
+              })}
               name="email"
               label="이메일 주소"
-              type="email"
+              type="text"
             />
+            {isValidate("email")}
+            {errorMessage("email")}
             <Button text={loading ? "로딩중..." : "회원가입"} />
           </form>
         ) : null}
