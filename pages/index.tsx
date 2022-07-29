@@ -16,11 +16,10 @@ interface ProductResponse {
 
 const Home: NextPage = () => {
   const { data, error } = useSWR<ProductResponse>("/api/products");
-  const isLoading = !data && !error;
   return (
     <Layout seoTitle="Products" title="홈" hasTabBar>
       <div className="flex flex-col space-y-5 justify-center">
-        {isLoading
+        {!data
           ? new Array(12).fill(0).map((num) => <ItemSkeleton key={num} />)
           : data?.products?.map((product) => (
               <Item
