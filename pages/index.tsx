@@ -5,9 +5,8 @@ import Layout from "@components/layouts/layout";
 import useSWR, { SWRConfig } from "swr";
 import { Product } from "@prisma/client";
 import "react-loading-skeleton/dist/skeleton.css";
+import client from "@libs/server/client";
 import { formatTime } from "@libs/client/utils";
-import Skeleton from "react-loading-skeleton";
-import ItemSkeleton from "@components/Skeletons/item-skeleton";
 
 interface ProductResponse {
   ok: boolean;
@@ -15,13 +14,12 @@ interface ProductResponse {
 }
 
 const Home: NextPage = () => {
-  const { data, error } = useSWR<ProductResponse>("/api/products");
+  const { data } = useSWR<ProductResponse>("/api/products");
   return (
     <Layout seoTitle="Products" title="홈" hasTabBar>
       <div className="flex flex-col space-y-5 justify-center">
-        {!data
-          ? new Array(12).fill(0).map((num) => <ItemSkeleton key={num} />)
-          : data?.products?.map((product) => (
+        {data
+          ? data?.products?.map((product) => (
               <Item
                 id={product.id}
                 key={product.id}
@@ -32,7 +30,8 @@ const Home: NextPage = () => {
                 hearts={product.wishCount}
                 create={formatTime(product.createdAt)}
               />
-            ))}
+            ))
+          : "Loading..."}
         <FloatButton href="/products/upload">
           <svg
             className="h-6 w-6"
@@ -55,4 +54,30 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+const Page: NextPage<{ products: ProductResponse }> = ({ products }) => {
+  return (
+    <SWRConfig
+      value={{
+        fallback: {
+          "/api/products": {
+            ok: true,
+            products,
+          },
+        },
+      }}
+    >
+      <Home />
+    </SWRConfig>
+  );
+};
+
+export async function getServerSideProps() {
+  const products = await client.product.findMany({});
+  return {
+    props: {
+      products: JSON.parse(JSON.stringify(products)),
+    },
+  };
+}
+
+export default Page;
