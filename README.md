@@ -81,9 +81,6 @@ Github의 Issue를 사용하고 우선순위와 라벨을 붙혀 등록을 해�
 <br>
 
 ## Test
-```
-TDD(Test Driven Development)를 기본 원칙으로 함  
-```
 ---
 
 
